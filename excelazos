@@ -1,0 +1,9 @@
+20/Mayo/2013
+
+- Indirect
+
+- SUMIFS: Bronca para poner condiciones que no sean de igualdad...
+```
+=SUMIFS(cosa_a_sumar,rango1,cosa_a_la_q_debe_ser_igual_rango1,rango2,">="&$B$1)
+```
+
