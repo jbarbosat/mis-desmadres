@@ -5,7 +5,10 @@ Así que decidí migrarla a Virtual Box...
 
 http://glenelg.net/migrating-from-parallels-8-to-virtualbox/
 
-Básicamente, Show contents del archivo .vpm, del archivo .hdd dentro de éste y luego buscar el archivo más pesado .hds
+Básicamente...
+- Show contents del archivo .vpm
+- Show contents del archivo .hdd dentro de éste
+- Copiar el archivo más pesado .hds y cambiarle el nombre a un .hdd
 
 Ése es el que sirve para que Virtual Box jale la máquina. Es una bronca porque hay que copiar el archivo a oootro lado
 y hace falta tener espacio.
