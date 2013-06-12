@@ -1,0 +1,119 @@
+% Título
+% Yo
+% Otoño 2013
+
+\begin{abstract}
+pandoc -s -V geometry:margin=0.7in -V lang=spanish bla.Rmd -o bla.pdf
+\end{abstract}
+
+1. Introducción
+--------------- 
+
+En este trabajo se utiliza la base encontrada en [Best buy mobile website](https://www.kaggle.com/c/acm-sf-chapter-hackathon-big/data?train.csv.) que contiene información sobre 3 meses durante los cuales 1.2 millones de usuarios hicieron 1.8 millones de clicks en los productos que ofrece el sitio. Esta base es parte de un concurso en \textsc{Kaggle} cuyo objetivo es ver qué productos de BestBuy se deben de recomendar a los clientes de acuerdo con la búsqueda que llevan a cabo. Se tienen los archivos `train.csv` (232.51Mb) y `test.csv` (145.42Mb) con datos sobre los productos que se eligieron (con click) después de haber hecho cierta búsqueda. No se tiene información sobre qué productos fueron comprados; sólo sobre los que fueron seleccionados por los usuarios para obtener más características sobre ellos. 
+
+La idea del trabajo es utilizar distintas técnicas vistas en clase para intentar recomendar  productos a los usuarios que realizan alguna búsqueda. Como no se tiene información sobre los productos que sí fueron comprados, no estamos llevando a cabo aprendizaje supervisado. Simplemente se busca extraer información a partir de las búsquedas que se llevan a cabo y de los productos que seleccionan los usuarios desde distintos enfoques y exponer los problemas y resultados obtenidos.
+
+
+2. Preparación y exploración de los datos
+------------------------------------------
+
+Cada línea del `train.csv` describe un click de cierto ususario en un producto y contiene los siguientes campos:
+
+* `user`: El ID del usuario
+
+* `sku`: La unidad del stock en que se tiene guardado del producto que eligió el usuario
+
+* `category`: La categoría del producto
+
+* `query`: Los términos de búsqueda que puso el usuario
+
+* `click_time`: Tiempo del click del usuario en el producto
+
+* `query_time`: Tiempo en que se hizo la búsqueda
+
+En el archivo `test.csv` se tienen los campos anteriores, exceptuando el sku, pero como no nos interesa predecir qué producto elegirá un usuario que realiza una búsqueda, omitimos este archivo.
+
+Adicionalmente, se tiene información de los productos, sus categorías y reseñas en `product_data.tar.gz` (767.74Mb). Este archivo consta de 2 tipos de archivos con formato `.xml`:
+
+* `Categorías` - categoría a la que pertenece cada producto
+* `Productos` - información detallada de cada producto
+
+En el archivo de `categorías` se tienen entradas como la siguiente:
+
+```xml
+<categories>
+  <category>
+    <id>abcat0010000</id>
+    <name>Gift Center</name>
+    <path>
+      <category>
+        <id>cat00000</id>
+        <name>Best Buy</name>
+      </category>
+      <category>
+        <id>abcat0010000</id>
+        <name>Gift Center</name>
+      </category>
+    </path>
+    <subCategories>
+      <category>
+        <id>pcmcat140000050035</id>
+        <name>Capturing Photos &amp; Videos</name>
+      </category>
+```
+
+En `productos`, se tienen 256 archivos `.xml` con alrededor de 100 atributos, entre los más interesentes están:
+
+```r
+ sku                   productId 
+ name                  type 
+ startDate             new 
+ regularPrice          salePrice 
+ onSale                digital 
+ preowned              categorypath (id,name) 
+ customerReviewCount   customerReviewAverage 
+ freeShipping          inStoreAvailability 
+ onlineAvailability    shippingCost 
+ class                 department 
+ manufacturer       
+```
+
+```bash
+java -jar xml2csv-conv.jar archivo.xml resultado.csv
+```
+
+
+COMENTARIOS SE INSERTAN:
+
+```r
+<!--adjasoidjaoifj-->
+```
+
+
+
+En **PostgreSQL** generamos una tabla que tenga como columnas `ticketid` y `sku`. Además, hay que convertir a minúsculas las queries para evitar problemas. Esto se hizo con el siguiente código:
+
+```sql
+DROP TABLE IF EXISTS bestbuytrain;
+
+CREATE TABLE bestbuytrain
+(userID varchar,
+sku varchar,
+category varchar,
+query varchar,
+click_time varchar,
+query_time varchar);
+
+--Nos quedamos con los tickets que tengan más de 3 items
+
+SELECT bestbuyticketid.ticketid, bestbuyticketid.userid, bestbuyticketid.query, 
+bestbuyticketid.sku, cuentas.count
+INTO bestbuyfinal
+FROM (bestbuyticketid JOIN cuentas ON (bestbuyticketid.ticketid = cuentas.ticketid))
+WHERE cuentas.count>3
+ORDER BY bestbuyticketid.ticketid;
+```
+
+INSERTAR DIBUJINES
+
+![Reglas con lift alto](reglas4mod.PNG)
