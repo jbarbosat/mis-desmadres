@@ -1,0 +1,16 @@
+12-Junio-2012
+
+Mi máquina virtual de Windows XP vivía dentro de mi Mac en Parallels pero eso alenta todo.
+Así que decidí migrarla a Virtual Box...
+
+http://glenelg.net/migrating-from-parallels-8-to-virtualbox/
+
+Básicamente, Show contents del archivo .vpm, del archivo .hdd dentro de éste y luego buscar el archivo más pesado .hds
+
+Ése es el que sirve para que Virtual Box jale la máquina. Es una bronca porque hay que copiar el archivo a oootro lado
+y hace falta tener espacio.
+
+Si ya no escribo nada más significa que funcionó y todo fue feliz por siempre.
+
+
+--Peace
