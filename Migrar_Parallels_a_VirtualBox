@@ -1,7 +1,9 @@
-12-Junio-2012
+12-Junio-2013
 
 Mi máquina virtual de Windows XP vivía dentro de mi Mac en Parallels pero eso alenta todo.
 Así que decidí migrarla a Virtual Box...
+
+Primer intento:
 
 http://glenelg.net/migrating-from-parallels-8-to-virtualbox/
 
@@ -13,7 +15,23 @@ Básicamente...
 Ése es el que sirve para que Virtual Box jale la máquina. Es una bronca porque hay que copiar el archivo a oootro lado
 y hace falta tener espacio.
 
-Si ya no escribo nada más significa que funcionó y todo fue feliz por siempre.
 
+14-Junio-2013
 
---Peace
+Eso no funcionó. 
+
+http://benfrain.com/osx-converting-parallels-or-vmware-to/
+
+- Hay que bajar VMWare Fusion. File/Import y el archivo .vpm
+- Tarda siglos. Show contents del archivo que se crea y el archivo con extension .vmdk es el bueno.
+- Ese archivo se copia en otro lado y es el que se usa para la máquina virtual con virtual box.
+- En la configuración, “Enabled IO APIC” para que rebootee bien. Además, instalar Addons ya que esté XP corriendo.
+- Para poder aumentar el tamaño del disco, tiene que ser .vdi así que en Virtual Box Archivo/Administrador de medios
+virtuales puede uno copiar el .vmdk y guardarlo como .vdi
+- Y luego, para auentar el tamaño...
+
+```
+VBoxManage modifyhd "/Volumes/PanBigData/WinXp2.vmdk" --resize 100000
+```
+
+(está en MB)
