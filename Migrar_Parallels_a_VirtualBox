@@ -35,3 +35,11 @@ VBoxManage modifyhd "/Volumes/PanBigData/WinXp2.vmdk" --resize 100000
 ```
 
 (está en MB)
+
+
+
+18-Junio-2013
+
+Funcionaba mejor Parallels, así que la regresé y bye virtual box.
+
+
