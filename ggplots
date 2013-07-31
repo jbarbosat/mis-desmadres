@@ -1,0 +1,30 @@
+
+#Titanic de Adolfo: Histogramas de la variable pclass dividido por boat
+
+sobrevivientes <- titanic3[titanic3$survived=="Yes", ]
+ggplot(data=sobrevivientes, aes(x=pclass)) + geom_bar() + facet_wrap(~boat,ncol=10)
+
+
+
+#Como el de Adolfo: Histogramas de d1 dividido por la variable d2
+ggplot(dafr, aes(x = d1)) + geom_histogram(binwidth = 5000) + facet_wrap( ~d2)
+
+
+
+
+#Mis plots de Cid
+
+nums.pregs<-c(13,  14,  15,	16,	17,	18,	19,	20,	39,	41,	44,	45,	46,	47,	48,	49,	50,	51,	52,	53,	64,	65,	70,	71,	72,	90,	93,	141,	148,	154,	155,	156,	157,	158,	159,	160,	161,	162,	163)
+library(reshape2)
+library(ggplot2)
+j<-1;
+for(i in nums.pregs){
+  datosaux<-melt(datos4[,c(1,i)],id.vars="country")
+  datosaux$value<-factor(datosaux$value,levels=niveles[[j]])
+  ggobj=ggplot(datosaux, aes(country, fill=value)) + geom_bar(position = "dodge") + labs(title = preguntas[i,1])
+  print(ggobj)
+  ggsave(sprintf("%s.pdf", preguntas[i,1]))
+  j<-j+1;
+}
+
+
