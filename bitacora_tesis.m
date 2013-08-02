@@ -12,11 +12,11 @@ Son datos de ventas de medicinas entre los laboratorios y las farmacias. Hay int
 Hay promociones y cosas así. Hay que decir cosas interesantes para que se conserven esos datos. 
 
 
-Julio 31, 2013
---------------
+Miércoles Julio 31, 2013
+-------------------------
 
 Nos vimos David y yo para rebotar ideas y ver qué onda. 
-Chance en dos días veamos al líder del proyecto que tiene ideas interesantes.
+EL viernes en Santa Fe vamos a ver a Arias que tbn tiene propuestas interesantes.
 
 Necesitamos enfocarnos en que se ahorren baro si hacen tal o cual cosa. O que ganen más baro si hacen bla bla. 
 
@@ -40,5 +40,6 @@ la suma de los importes que caen en ese tipo de operación: venta, descuento o p
 Problemas y preguntas:
 
 - David dijo que venta, descuento o promoción (importe >0, <0 ó =0) pero en la base todo es positivo. 
+    FALSO! Estaba transformándose mal. Ya se solucionó.
 - Tenemos una muestra cero representativa...
 - Haace falta entender mejor las variables para ver qué es importante.
