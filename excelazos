@@ -7,3 +7,20 @@
 =SUMIFS(cosa_a_sumar,rango1,cosa_a_la_q_debe_ser_igual_rango1,rango2,">="&$B$1)
 ```
 
+01/Agosto/2013
+
+- Promedios ponderados en pivot tables
+
+http://excel.tips.net/T002900_Weighted_Averages_in_a_PivotTable.html
+
+For example, you could add a "WeightedValue" column to your source data. The formula in the column should multiply the weight times the value to be weighted. This means that if your weight is in column C and your value to be weighted is in column D, your formula in the WeightedValue column would simply be like =C2*D2. This formula will be copied down the entire column for all the rows of the data.
+You are now ready to create your PivotTable, which you should do as normal with one exception: you need to create a Calculated Field. Follow these steps:
+Click the down arrow next to the word PivotTable at the left side of the PivotTable toolbar. Excel displays a menu.
+Choose Formulas | Calculated Fields.
+
+In the Name box, enter a name for your new field.
+In the Formula box, enter the formula you want used for your weighted average, such as =WeightedValue/Weight. (You use field names in the formula; you can select them from the field list at the bottom of the Insert Calculated Field dialog box.)
+Click OK.
+Your calculated field is now inserted, and you can use the regular summation functions to display a sum of the calculated field; this is your weighted average.
+Since there are many different ways that weighted averages can be calculated, it should go without saying that you can modify the formulas and steps presented here to reflect exactly what you need done with your data.
+ExcelTips is your source for cost-effective Microsoft Excel training. This tip (2900) applies to Microsoft Excel versions: 97 | 2000 | 2002 | 2003
