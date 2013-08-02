@@ -43,3 +43,38 @@ Problemas y preguntas:
     FALSO! Estaba transformándose mal. Ya se solucionó.
 - Tenemos una muestra cero representativa...
 - Haace falta entender mejor las variables para ver qué es importante.
+
+
+
+Viernes Agosto 2, 2013
+-------------------------
+
+Reunión con Arias en Intellego. 
+
+- De qué son los importes que tengo? Son importes totales de la factura? O son precios por producto en la factura? 
+Porque si es esto segundo, entonces esos importes/cantidad me dan el precio unitario del producto en la factua.
+Y si no, si tengo importes por producto por factura por condición... Necesito sumar todos los movimientos 
+de un producto en una factura para sacar el precio total porque es posible que por producto tengan "precio del grupo
+de productos", "descuento tipo 1", "descuento tipo 2", bla bla... de tal forma que lo que de hecho pagó el cliente por
+un conjunto de productos de debe obtener sumando productos en una factura.
+
+- Así tengo dos posibles modos de analizar esto. Las operaciones desagregadas o tal cual los precios en el tiempo.
+    - Para operaciones desagregadas puedo hacer lo que hice... A quién le estás haciendo más descuentos de 
+    tipo no sé qué madres y de importes más altos?
+    - Para precios en el tiempo hay que agregar las operaciones.
+
+- Broncota: Nuestros datos son chacas! Necesitamos o una canasta de productos en el tiempo o un set de clientes.
+
+- Diferentes sectores de clientes => diferentes descuentos y políticas. Eso ya lo saben esos weyes así que no es muy
+interesante. No son combinables entre sectores.
+
+- Necesito que me digan qué sector analizar o qué tipo de productos analizar. 
+
+
+Tarea:
+
+- Ver al dude de la base de datos el martes próximo. Entender bien qué datos hay. 
+- Jueves: tener una lista de brainstorms de cosas que se pueden hacer con los datos que hay.
+- Próxima semana: feedback de las cosas que se nos ocurrieron que se pueden hacer.
+
+
