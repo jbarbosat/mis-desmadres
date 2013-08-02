@@ -7,7 +7,7 @@
 =SUMIFS(cosa_a_sumar,rango1,cosa_a_la_q_debe_ser_igual_rango1,rango2,">="&$B$1)
 ```
 
-01/Agosto/2013
+01/Agosto/2013 (CLI)
 
 - Promedios ponderados en pivot tables
 
@@ -24,3 +24,10 @@ Click OK.
 Your calculated field is now inserted, and you can use the regular summation functions to display a sum of the calculated field; this is your weighted average.
 Since there are many different ways that weighted averages can be calculated, it should go without saying that you can modify the formulas and steps presented here to reflect exactly what you need done with your data.
 ExcelTips is your source for cost-effective Microsoft Excel training. This tip (2900) applies to Microsoft Excel versions: 97 | 2000 | 2002 | 2003
+
+
+- Copiar pivot charts y que se relinkeen a otros datos
+
+http://peltiertech.com/WordPress/copy-pivot-table-pivot-chart-link-to-new-data/
+
+Copias la chart en un nuevo workbook, la cortas, la regresas a la nueva hoja del libro original y relinkeas
