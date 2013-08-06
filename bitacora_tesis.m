@@ -83,6 +83,40 @@ Martes Agosto 6, 2013
 ----------------------
 
 Vimos a Salvador Diaz Alcantara, el dude de Intellego que está trabajando con los de Nadro en sus instalaciones.
-Nos vimos a las 9am en el ITAM y de ahí David me dio ride a Nadro (Santa Fe, frente a la Ibero).
+Nos vimos a las 9am en el ITAM y de ahí David me dio ride al Starbucks frente a Nadro (Santa Fe, frente a la Ibero).
+
+- Hasta ahora tienen información a nivel factura; cosas como cuánto vendieron este mes; cuánto de su venta fue descuentos, etc.
+
+- Sería valioso poder aportar información a un nivel más específico para un head y un tail de las ventas: 
+    - A nivel producto
+    - A nivel tipo de costo
+    - A nivel tipo de descuento
+Ahorita no lo pueden hacer porque BW (pertenece a SAP) no da. Si además pudiéramos comparar con años anteriores estaría chido.
+
+- En la base, condición = 0KNART y el importe = 0KNVAL. Cada producto tiene distintas condiciones para un cliente.
+Hay muchas condiciones que no importan para lo que queremos hacer; Salvador sugiere quedarnos con las de la muestra.
+Tenemos una muestra que es básicamente de 2 días no completos (500 K registros). De ahí sacar las condiciones.
+Y nos interesan las condiciones que hablen de costos y de descuentos.
+
+- También sería valioso aportar rentabilidad de los productos más y menos vendidos. 
+
+- Quizá en algún lugar del catálogo exista "familia de producto" as in: antibióticos, antipiréticos, analgésicos, etc. 
+Podríamos hacer análisis dentro de cada familia de producto.
+
+- Tienen datos de hasta 3 años atrás pero para otros modelos; es decir, igual y no tienen todos los campos que necesitamos.
+Para los datos tal cual como los de la muestra, tenemos desde enero de 2013.
+
+- En promedio hay 60 productos por factura y hay 60 K facturas al mes
+
+- En cuanto a market basket, sí está chido pero primero responder sus preguntas; luego viene todo eso extra.
 
 
+
+Pendiente:
+
+- Que Salvador nos pase el catálogo de productos (material en la base de datos)
+
+
+Tarea:
+
+- Necesitamos un prototipo de reporte y revisarlo con Salvador antes de ir con la gente de Nadro y pedir los tres meses d info.
