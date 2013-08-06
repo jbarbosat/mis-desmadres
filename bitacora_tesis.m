@@ -49,7 +49,7 @@ Problemas y preguntas:
 Viernes Agosto 2, 2013
 -------------------------
 
-Reunión con Arias en Intellego. 
+Reunión con Arias en Intellego. Se me hizo tarde. David me dio ride a Santa Fe. 
 
 - De qué son los importes que tengo? Son importes totales de la factura? O son precios por producto en la factura? 
 Porque si es esto segundo, entonces esos importes/cantidad me dan el precio unitario del producto en la factua.
@@ -76,5 +76,13 @@ Tarea:
 - Ver al dude de la base de datos el martes próximo. Entender bien qué datos hay. 
 - Jueves: tener una lista de brainstorms de cosas que se pueden hacer con los datos que hay.
 - Próxima semana: feedback de las cosas que se nos ocurrieron que se pueden hacer.
+
+
+
+Martes Agosto 6, 2013
+----------------------
+
+Vimos a Salvador Diaz Alcantara, el dude de Nadro de la base de datos. 9am en el ITAM y de ahí David me dio ride a Nadro. 
+Santa Fe, frente a la Ibero.
 
 
