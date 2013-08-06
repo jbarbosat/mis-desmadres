@@ -6,17 +6,17 @@ Dropbox con una muestra de los datos que básicamente corresponden a dos días.
 
 David se va a ir de viaje así q estos días hay que espiar los datos y tener ideas inteligentes.
 
-Próxima semana nos veremos.
+Próxima semana nos veremos pero Adolfo se va.
 
-Son datos de ventas de medicinas entre los laboratorios y las farmacias. Hay intermediarios que hacen eso.
-Hay promociones y cosas así. Hay que decir cosas interesantes para que se conserven esos datos. 
+Son datos de ventas de medicinas entre los laboratorios y las farmacias, etc. Hay intermediarios que hacen eso.
+Hacen promociones y cosas así. Hay que decir cosas interesantes para que se conserven esos datos. 
 
 
 Miércoles Julio 31, 2013
 -------------------------
 
 Nos vimos David y yo para rebotar ideas y ver qué onda. 
-EL viernes en Santa Fe vamos a ver a Arias que tbn tiene propuestas interesantes.
+El viernes en Santa Fe vamos a ver a Arias que tbn tiene propuestas interesantes.
 
 Necesitamos enfocarnos en que se ahorren baro si hacen tal o cual cosa. O que ganen más baro si hacen bla bla. 
 
@@ -82,8 +82,8 @@ Tarea:
 Martes Agosto 6, 2013
 ----------------------
 
-Vimos a Salvador Diaz Alcantara, el dude de Intellego que está trabajando con los de Nadro en sus instalaciones.
-Nos vimos a las 9am en el ITAM y de ahí David me dio ride al Starbucks frente a Nadro (Santa Fe, frente a la Ibero).
+Vimos a Salvador Diaz Alcantara, el dude de Intellego que está trabajando con los de Nadro.
+Nos vimos a las 9am en el ITAM y de ahí David me dio ride al Starbucks frente a Nadro (Santa Fe, x la Ibero).
 
 - Hasta ahora tienen información a nivel factura; cosas como cuánto vendieron este mes; cuánto de su venta fue descuentos, etc.
 
@@ -93,14 +93,17 @@ Nos vimos a las 9am en el ITAM y de ahí David me dio ride al Starbucks frente a
     - A nivel tipo de descuento
 Ahorita no lo pueden hacer porque BW (pertenece a SAP) no da. Si además pudiéramos comparar con años anteriores estaría chido.
 
-- En la base, condición = 0KNART y el importe = 0KNVAL. Cada producto tiene distintas condiciones para un cliente.
+- Cada presentación de Aspirina es un MATERIAL distinto. Agrupan esas cosas a manita. De querer hacerlo automáticamente
+habría que pedirle a la gente de Nadro un catálogo; no es pedo.
+
+- En la base, condición = 0KNART y el importe = 0KNVAL. Cada producto tiene distintas condiciones para cada cliente.
 Hay muchas condiciones que no importan para lo que queremos hacer; Salvador sugiere quedarnos con las de la muestra.
 Tenemos una muestra que es básicamente de 2 días no completos (500 K registros). De ahí sacar las condiciones.
-Y nos interesan las condiciones que hablen de costos y de descuentos.
+Al final nos interesan las que hablen de costos y de descuentos.
 
 - También sería valioso aportar rentabilidad de los productos más y menos vendidos. 
 
-- Quizá en algún lugar del catálogo exista "familia de producto" as in: antibióticos, antipiréticos, analgésicos, etc. 
+- Quizá en algún lugar de la basesota exista "familia de producto", as in: antibióticos, antipiréticos, analgésicos, etc. 
 Podríamos hacer análisis dentro de cada familia de producto.
 
 - Tienen datos de hasta 3 años atrás pero para otros modelos; es decir, igual y no tienen todos los campos que necesitamos.
@@ -108,8 +111,24 @@ Para los datos tal cual como los de la muestra, tenemos desde enero de 2013.
 
 - En promedio hay 60 productos por factura y hay 60 K facturas al mes
 
+- Posición/10 = lugar en el ticket en que aparece el producto (puede servir para construir id del movimiento de un producto
+en una factura, como decía David).
+
+
+Resumen:
+
+- Dar info en un nivel más bajo que factura: por producto, por tipo de descuento, por tipo de costo, por cliente... Y sus cruces.
+
+
+Propuestas extras:
+
+- Análisis de precios de productos en el tiempo o de acuerdo con el cliente o cosas así.
 - En cuanto a market basket, sí está chido pero primero responder sus preguntas; luego viene todo eso extra.
 
+- Antes de hacerlo en serio, serio con TODOS los datos (HANA, de SAP), podríamos tener algo para 3 meses para 20 productos.
+Esto podríamos montarlo o en Postgres o en un Hadoopsín, chance en Amazon. Si es Postgres, con un script que corramos desde R
+o desde el mismo Postgres sale hasta el reporte. Si es Hadoop, habrá que decidir en qué trepamos la base (Hive, supongo) 
+y luego mandar los datos filtrados a R para que produzca el reporte solito. 
 
 
 Pendiente:
@@ -120,3 +139,10 @@ Pendiente:
 Tarea:
 
 - Necesitamos un prototipo de reporte y revisarlo con Salvador antes de ir con la gente de Nadro y pedir los tres meses d info.
+- El reporte debería tener para 20 productos info sobre los descuentos que se aplican ( x tipo ), sobre los costos (x tipo),
+sobre su rentabilidad. Poder agrupar por región o sucursal. Gráficas encimadas con las de ventas totales.
+- Pregunta: Es como decía Arias que puede que un mismo producto aparezca en la misma factura pero con distintas condiciones?
+Supongo que sí pero no es mala idea verificar.
+- También es buena idea echarle un ojo a las condiciones que tenemos en la base de datos e ir identificando el tipo de
+costos y de descuentos que tenemos so far.
+
