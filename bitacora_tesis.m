@@ -82,7 +82,7 @@ Tarea:
 Martes Agosto 6, 2013
 ----------------------
 
-Vimos a Salvador Diaz Alcantara, el dude de Nadro de la base de datos. 9am en el ITAM y de ahí David me dio ride a Nadro. 
-Santa Fe, frente a la Ibero.
+Vimos a Salvador Diaz Alcantara, el dude de Intellego que está trabajando con los de Nadro en sus instalaciones.
+Nos vimos a las 9am en el ITAM y de ahí David me dio ride a Nadro (Santa Fe, frente a la Ibero).
 
 
