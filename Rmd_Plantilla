@@ -148,7 +148,7 @@ condiciones<-as.data.frame(read.csv('/Users/PandoraMac/Documents/Nadro/Datos/con
 
 PAra insertar imagenitas...
 
-```{r fig.width=7, fig.height=3}
+```{r NombreDelChunk fig.width=7, fig.height=3, fig.cap=""}
 par(mfrow=c(1,2))
 tipo<-"ZPRF"
 titulo<-condiciones[condiciones[,1]==tipo,2]
