@@ -3,7 +3,11 @@
 % Otoño 2013
 
 \begin{abstract}
-pandoc -s -V geometry:margin=0.7in -V lang=spanish bla.Rmd -o bla.pdf
+Makefile:
+Picamos Knit HTML y eso crea un .md
+
+pandoc -s -V geometry:margin=0.7in -V lang=spanish reporte_01.md -o reporte_01.pdf
+
 \end{abstract}
 
 1. Introducción
@@ -117,3 +121,43 @@ ORDER BY bestbuyticketid.ticketid;
 INSERTAR DIBUJINES
 
 ![Reglas con lift alto](reglas4mod.PNG)
+
+
+Y para correr código de R...
+
+
+Primero, para que las gráficas no salgasn pixeleadas en el PDF...
+
+
+```{r setup, include=FALSE}
+opts_chunk$set(dev = 'pdf')
+```
+
+
+PA que no se imprima
+```{r,echo=FALSE}
+#Un catálogo de las condiciones presentes en la base
+condiciones<-as.data.frame(read.csv('/Users/PandoraMac/Documents/Nadro/Datos/condiciones.csv',header=TRUE,as.is = TRUE))
+```
+
+Pa que no se ejecute
+```{r,eval=FALSE}
+#Un catálogo de las condiciones presentes en la base
+condiciones<-as.data.frame(read.csv('/Users/PandoraMac/Documents/Nadro/Datos/condiciones.csv',header=TRUE,as.is = TRUE))
+```
+
+PAra insertar imagenitas...
+
+```{r fig.width=7, fig.height=3}
+par(mfrow=c(1,2))
+tipo<-"ZPRF"
+titulo<-condiciones[condiciones[,1]==tipo,2]
+auxiliar<-datos[datos$cond==tipo,]
+plot(auxiliar[1:500,3],main=titulo,xlab="Tiempo",ylab=condiciones[condiciones[,1]==tipo,2], type="l")
+
+plot(blolo)
+```
+
+
+
+
