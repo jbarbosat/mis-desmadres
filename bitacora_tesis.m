@@ -146,3 +146,45 @@ Supongo que sí pero no es mala idea verificar.
 - También es buena idea echarle un ojo a las condiciones que tenemos en la base de datos e ir identificando el tipo de
 costos y de descuentos que tenemos so far.
 
+
+
+Viernes Agosto 9, 2013
+----------------------
+
+Reunión en Intellego con David, Salvador, Margoth, Armando y Rocío. 
+
+
+Salvador
+--------
+
+Salvador hace reportitos para muchas areas (ventas, inventarios, etc.) en Nadro.
+Condiciones de precio basados en facturas. Ventas netas, devoluciones, descuentos, 
+rentabilidad (so far x sucursal de Nadro, grupo de clientes).
+
+Queremos rentabilidad por proveedor tbn (expediente del proveedor) pero esa es otra historia.
+Por producto y por mostrador lo puedo sacar con lo que tengo.
+So far veo de cada factura: Total neto, costo promedio, utilidad total.
+
+PD: Su clasificación de mostrador > cadena > subgrupo > grupo está pésima. So far damos info hasta cadena y ya tarda.
+Walmart da rentabilidad del -0.7 a 1 %. Todo Nadro tiene margen neto de utilidad de como el 1% y venta neta mensual es
+de 1,700 millones de pesos al mes.
+
+Nadro generan precios con base en una herramienta Vistex que pronostica demanda. 
+
+Precio Nadro (lo que les costó a ellos), precio público (casi siempre es sobre este precio que aplican descuentos y cosas),
+precio farmacia (el de la cajita de la medicina).
+
+Descuentos comerciales, financieros, corporativos, por pronto pago.
+
+Costo promedio (costo del lote), cedido (costo a que lo trasladas las cosas al cliente), total.
+
+HANA. Convertir mis datos en cuánto dinero se van a ahorrar tal que valga la pena invertir 20 millones de dólares en esa madre...
+
+
+
+
+Miércoles tarde o jueves temprano cita con un dude de Nadro. Un power point.
+
+
+
+
