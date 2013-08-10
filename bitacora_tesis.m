@@ -187,4 +187,11 @@ Miércoles tarde o jueves temprano cita con un dude de Nadro. Un power point.
 
 
 
+Venta neta / Costo.
 
+Prec. factura interna es costo.
+
+
+Tarea:
+
+- Armar el Shiny. Grafiquitas en R susceptibles de ser puestas en un ppt. 
