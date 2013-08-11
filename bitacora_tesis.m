@@ -210,17 +210,31 @@ y era porque sobreescribí objetos. Hay que ponerles nombres disitntos y ya.
 Suponiendo que voy a hacer una selección de productos y personas y escupirlos en un csv que pueda jalar desde R o algo así.
 Si no, quizá a R le conviene leer como catálogos y ya :)
 
-- Para filtrar fue un problema el que se seleccionara la opción "TODO". Tenía que tener un if y se hizo un relajo.
-Con isolate el if jalaba:
+- Para filtrar fue un problema el que se seleccionara la opción "TODO". Tenía que tener un if sobre los inputs 
+y se hizo un relajo. Con isolate el if jalaba pero no se actualizaban las cosas.
 
 ```r
 aux<-input$cliente
 if(isolate(cliente()!="Todo")) 
 ```
 
-Bronca: Ya no se actualizaba nada al seleccionar más opciones.
+Intenté darle la vuelta filtrando poco a poco y si en algún momento me quedaba sin registros, regresar al anterior.
+Es decir, controlar este desmadre a partir del número de renglones. Pero iba a ser un problema si de hecho un producto
+no estaba para algún cliente o cosas así.
 
-Solución: Ir filtrando poco a poco y si en algún momento me quedaba sin registros, regresar al anterior.
-Es decir, controlar este desmadre a partir del número de renglones.
+Solución:
 
-Para ahorita si funciona pero necesitamos otra cosa más decente.
+https://github.com/wch/testapp/blob/master/setinput/ui.R
+https://github.com/wch/testapp/blob/master/setinput/server.R
+
+Utilizar sprintf para cachar el contenido de los cosos inputeados!!! Así ya puede hacer ifs felices:
+
+```r
+Material<-sprintf(reactive({input$material})())
+if(Material!="Todo"){
+  datos3<-reactive({datos2()[datos2()$producto==Material]})
+}
+else{
+  datos3<-datos2
+}
+```
