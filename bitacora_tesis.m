@@ -202,8 +202,16 @@ Sábado Agosto 10, 2013
 
 Aprendizajes de Shiny.
 
-Tenía que filtrar los datos y si seleccionaban "TODO", no había que hacer nada. Pero para hacer eso, necesitaba
-un if y se hizo un desmadre. Lo logré con isolate:
+- Tengo un filtro cuyas opciones determinan las opciones de otro. Para ello use updateSelectInput.
+Salía error de Error : evaluaci'on anidada demasiado profunda; recursi'on infinita options(expressions= )?
+y era porque sobreescribí objetos. Hay que ponerles nombres disitntos y ya.
+
+- En un futuro todas las opciones pueden determinarse a partir de las cosas en la base de datos... 
+Suponiendo que voy a hacer una selección de productos y personas y escupirlos en un csv que pueda jalar desde R o algo así.
+Si no, quizá a R le conviene leer como catálogos y ya :)
+
+- Para filtrar fue un problema el que se seleccionara la opción "TODO". Tenía que tener un if y se hizo un relajo.
+Con isolate el if jalaba:
 
 ```r
 aux<-input$cliente
@@ -212,7 +220,7 @@ if(isolate(cliente()!="Todo"))
 
 Bronca: Ya no se actualizaba nada al seleccionar más opciones.
 
-Solución: Ir Filtrando poco a poco y si en algún momento me quedaba sin registros, regresar al anterior.
+Solución: Ir filtrando poco a poco y si en algún momento me quedaba sin registros, regresar al anterior.
 Es decir, controlar este desmadre a partir del número de renglones.
 
-
+Para ahorita si funciona pero necesitamos otra cosa más decente.
