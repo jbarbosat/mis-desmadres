@@ -195,3 +195,24 @@ Prec. factura interna es costo.
 Tarea:
 
 - Armar el Shiny. Grafiquitas en R susceptibles de ser puestas en un ppt. 
+
+
+Sábado Agosto 10, 2013
+-----------------------
+
+Aprendizajes de Shiny.
+
+Tenía que filtrar los datos y si seleccionaban "TODO", no había que hacer nada. Pero para hacer eso, necesitaba
+un if y se hizo un desmadre. Lo logré con isolate:
+
+```r
+aux<-input$cliente
+if(isolate(cliente()!="Todo")) 
+```
+
+Bronca: Ya no se actualizaba nada al seleccionar más opciones.
+
+Solución: Ir Filtrando poco a poco y si en algún momento me quedaba sin registros, regresar al anterior.
+Es decir, controlar este desmadre a partir del número de renglones.
+
+
