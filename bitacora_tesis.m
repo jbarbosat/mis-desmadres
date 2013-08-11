@@ -240,4 +240,5 @@ else{
 ```
 
 - Ya tengo dos tabs con pocas tablas y pocos datos y tarda pinche mil años! Así que se me ocurre calcular una vez 
-tablas con agregados y de ellas plottear columnas.
+tablas con agregados y de ellas plottear columnas. 
+Aparentemente la bronca es que estaba usando el mismo chunchito para que fuera output en dos pestañas! Santo remedio.
