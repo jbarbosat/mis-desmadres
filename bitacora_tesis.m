@@ -194,7 +194,8 @@ Prec. factura interna es costo.
 
 Tarea:
 
-- Armar el Shiny. Grafiquitas en R susceptibles de ser puestas en un ppt. 
+- Armar el Shiny.
+
 
 
 Sábado Agosto 10, 2013
@@ -242,3 +243,23 @@ else{
 - Ya tengo dos tabs con pocas tablas y pocos datos y tarda pinche mil años! Así que se me ocurre calcular una vez 
 tablas con agregados y de ellas plottear columnas. 
 Aparentemente la bronca es que estaba usando el mismo chunchito para que fuera output en dos pestañas! Santo remedio.
+
+- Estaba teniendo pedos para hacer un histograma del mal con ggplot. Todo por culpa de los pinches tipos de datos de R...
+As always. Moraleja: Si su gráfica sale rarita, cheque los typeof, str y attributes de sus chingaderas.
+
+
+Pendientes:
+
+- Necesito hacer funciones para determinar las gráficas porque es un mega desmadre so far.
+- Intenté separar el código en .R's pero no jaló. Tengo pedos de scoping y hueva meterme con eso.
+- Para q el código funcione en serio debe hacer referencia a los catálogos de sectores, clientes y materiales.
+- También debo hacer "dinámicos" los choices de los materiales y del resto de los filtros que seguro surgirán. 
+
+
+Divagaciones:
+
+Yisus, queda chingo por hacer. Necesitamos pensar en el deployment final. Si sólo quiero que imprima reportes,
+un markdown automatizado es la opción. Porque una aplicación como lo que estoy armando.... Es un desmadre.
+Aparentemente el HANA ese ya hace todo eso así que yo opino que reportitos para lo que hagamos con Hadoop.
+David está pensando en 2 semanas para algo de mentiras y 4 para montar las cosas para 3 meses. Yo opino que 
+es muy poco tiempo pero habrá que ver. 
