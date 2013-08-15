@@ -1,0 +1,12 @@
+15-08-2013
+
+Picándole a Shiny para la tesis, hemos aprendido que...
+
+- en los tabsets, no dejarás enters entre cada tabsita
+- no escupiras tableOutputs con acentos u otros caracteres raritos porque se chinga toda la pesataña
+- no puedes poner dentro de una tabset una conditionalPanel. puedes darle la vuelta poniendo un if(bloblo) en un
+cachito renderPlot p bien dejar hasta el final de tu pestaña el conditionalpanel (plot); total, si no se plottea, no
+se nota porque está hasta abajo de la pestaña.
+- ah y no puedes utilizar en dos pestañas distintas el mismo output$whatever. nomás no carga nada.
+- ojo, algunos errores ni se imprimen y obvio no tienes ni idea de por qué no jala tu pobre app.
+- si una plot no carga, ponerle plot(ggplot(blo)), por ejemplo.
