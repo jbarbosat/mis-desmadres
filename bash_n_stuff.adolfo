@@ -1,7 +1,36 @@
-
 ICONV
 
+```{bash}
 iconv -f WINDOWS-1252 -t utf-8 indtie.txt > indtie_utf8.txt
 
 iconv -f iso-8859-1 -t utf-8 train.csv > train_utf8.csv
+````
+
+
+
+FOR
+
+Queríamos para cada archivo con normbre rita_algo subirlos a la base en postgres...
+
+```{bash}
+for f in rita_*
+do
+sql="\copy dirty_rita from $f with header csv;";
+echo $sql
+echo "-------------------------------"
+date
+/Library/PostgreSQL/9.1/bin/psql -U postgres bigdata_db -c "$sql"
+echo "*******************************"
+date
+done
+```
+
+Y para deszippear cosas...
+
+
+```{bash}
+for f in *.bz2; 
+do bunzip2 -k "$f"; 
+done
+````
 
