@@ -1,0 +1,7 @@
+
+ICONV
+
+iconv -f WINDOWS-1252 -t utf-8 indtie.txt > indtie_utf8.txt
+
+iconv -f iso-8859-1 -t utf-8 train.csv > train_utf8.csv
+
