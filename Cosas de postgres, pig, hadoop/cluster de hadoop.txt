@@ -1,0 +1,106 @@
+Cluster de Hadoop
+22-mayo-2013
+
+Ip's
+
+Jess - 10.105.111.109  10.189.20.37
+Liz - 10.105.135.189    10.27.30.241
+David - 10.105.122.142  10.75.169.219
+Antonio - 10.105.182.113
+
+
+En hadoop2.
+
+Task node:
+core-site.,xml
+Agregar el ip del master
+
+mapred-site.xml
+mismo sistema de carpetas todos.
+agregar el ip de antonio
+
+
+El master...
+además de los usuales, en slaves tiene q agregar nuestros ips
+
+
+
+25-mayo-2013
+
+Ip's
+
+Jess - 192.168.1.78
+Liz - 192.168.1.69
+David - 192.168.1.76
+Antonio - 192.168.1.68
+
+http://unix.stackexchange.com/questions/36540/why-am-i-still-getting-a-password-prompt-with-ssh-with-public-key-authentication
+
+Just try these following commands
+
+    ssh-keygen
+
+    Press Enter key till you get the prompt
+
+    ssh-copy-id -i root@ip_address
+
+    (It will once ask for the password of the host system)
+
+    ssh root@ip_address
+
+    Now you should be able to login without any password
+
+ssh-copy-id -i hduser@192.168.1.68
+ssh-copy-id -i hduser@192.168.1.69
+ssh-copy-id -i hduser@192.168.1.76
+
+Y ya no pide psswd :D
+
+cd hadoop2
+
+Task node:
+core-site.xml
+Agregar el ip del master
+
+mapred-site.xml
+mismo sistema de carpetas todos.
+agregar el ip de antonio
+
+
+Data nodes:
+ mkdir -p itam-cluster/data itam-cluster/local itam-cluster/name
+chmod -R 755 itam-cluster
+#TODOS
+
+nano $HADOOP_HOME/conf/hadoop-env.sh
+#agregar export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+
+nano $HADOOP_HOME/conf/core-site.xml
+# agregar en configuration
+<property>
+        <name>fs.default.name</name>
+        <value>hdfs://192.168.1.68:9000/</value>
+</property>
+
+
+nano $HADOOP_HOME/conf/hdfs-site.xml
+# agregar en configuration
+<property>
+        <name>dfs.name.dir </name>
+        <value>/home/hduser/itam-cluster/name </value>
+</property>
+
+<property>
+        <name>dfs.data.dir </name>
+        <value>/home/hduser/itam-cluster/data </value>
+</property>
+
+
+
+ 
+
+
+
+
+
+

@@ -1,0 +1,269 @@
+CREATE EXTERNAL TABLE ritalimpio6(
+    Year STRING, Month STRING, DayofMonth STRING, DayOfWeek STRING, 
+    DepTime STRING, CRSDepTime STRING, ArrTime STRING, CRSArrTime STRING,
+    UniqueCarrier STRING, FlightNum STRING, TailNum STRING, ActualElapsedTime INT,
+    CRSElapsedTime INT, AirTime INT, ArrDelay INT,DepDelay INT,
+    Origin STRING, Dest STRING, Distance FLOAT, TaxiIn INT,
+    TaxiOut INT, Cancelled INT, CancellationCode STRING, Diverted INT,
+    CarrierDelay INT, WeatherDelay INT, NASDelay INT, SecurityDelay INT,
+    LateAircraftDelay INT, Flight_date STRING)
+    COMMENT 'Base de datos limpia de los vuelos de 1987 a 1989'
+    ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' STORED AS TEXTFILE;
+    
+    
+ load data inpath '/user/pandora/ritalimpio/part-m-00000' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00001' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00002' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00003' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00004' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00005' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00006' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00007' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00008' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00009' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00010' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00011' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00012' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00013' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00014' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00015' into table ritalimpio6; 
+ load data inpath '/user/pandora/ritalimpio/part-m-00016' into table ritalimpio6; 
+ 
+ select * from ritalimpio6 join airports on (ritalimpio6.Origin = airports.iata) limit 10;
+ 
+ -----------
+ 
+ 
+ 
+ ..-------
+ 
+ Pregunta 5
+ 
+ Se pide encontrar la aerolínea con más kilómetros, más vuelos y más destinos.
+ 
+ `````` 
+( select distinct uniquecarrier, flightnum, dest,
+sum(distance) over(
+ partition by uniquecarrier
+ ) as distancia
+from ritalimpio
+where cancelled=FALSE
+group by uniquecarrier, flightnum, flightnum, dest, distance
+) as pregunta;
+
+select distinct uniquecarrier, 
+count(distinct(flightnum)) as vuelos, 
+count(distinct(dest)) as destinos
+from pregunta
+group by uniquecarrier
+```````
+bin/pig -Dpig.mapred.child.java.opts=-Xms1048576M
+
+
+register /home/pandora/hadoop-stack/pig-0.11.0/contrib/piggybank/java/piggybank.jar;    
+define replace org.apache.pig.piggybank.evaluation.string.REPLACE;  
+define substring org.apache.pig.piggybank.evaluation.string.SUBSTRING;  
+
+dirtyrita = LOAD 'rita878889/878889.csv' USING PigStorage(',') AS 
+    (Year:chararray, Month:chararray, DayofMonth:chararray, DayOfWeek:chararray,
+     DepTime:chararray, CRSDepTime:chararray, ArrTime:chararray, CRSArrTime:chararray,
+     UniqueCarrier:chararray, FlightNum:chararray, TailNum:chararray, ActualElapsedTime:chararray,
+     CRSElapsedTime:chararray, AirTime:chararray, ArrDelay:chararray, DepDelay:chararray,
+     Origin:chararray, Dest:chararray, Distance:chararray, TaxiIn:chararray, TaxiOut:chararray,
+     Cancelled:chararray, CancellationCode:chararray, Diverted:chararray, CarrierDelay:chararray,
+     WeatherDelay:chararray, NASDelay:chararray, SecurityDelay:chararray, LateAircraftDelay:chararray);
+
+rita0 = foreach dirtyrita generate $0,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,
+        replace(Month, 'NA', '00') as Month2, 
+        replace(DayofMonth, 'NA', '00') as DayofMonth2,
+        CONCAT('0',replace(DepTime, 'NA', '000')) as DepTime3,
+        CONCAT('0',replace(CRSDepTime, 'NA', '000')) as CRSDepTime3,
+        CONCAT('0',replace(ArrTime, 'NA', '000')) as ArrTime3,
+        CONCAT('0',replace(CRSArrTime, 'NA', '000')) as CRSArrTime3;
+
+prueba = limit rita0 5;
+dump prueba;
+
+(1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,14,741,730,912,849)
+(1987,10,15,4,729,730,903,849,PS,1451,NA,94,79,NA,14,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,15,729,730,903,849)
+(1987,10,17,6,741,730,918,849,PS,1451,NA,97,79,NA,29,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,17,741,730,918,849)
+(1987,10,18,7,729,730,847,849,PS,1451,NA,78,79,NA,-2,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,18,729,730,847,849)
+(1987,10,19,1,749,730,922,849,PS,1451,NA,93,79,NA,33,19,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,19,749,730,922,849)
+
+
+
+rita1 = foreach rita0 generate $0,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,
+        Month2, DayofMonth2, CONCAT('0',DepTime2) as DepTime3, 
+        CONCAT('0',CRSDepTime2) as CRSDepTime3, 
+        CONCAT('0',ArrTime2) as ArrTime3, 
+        CONCAT('0',CRSArrTime2) as CRSArrTime3;
+
+
+rita2 = foreach rita1 generate $0,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,
+        Month2, DayofMonth2, 
+        substring(DepTime3,(int)SIZE(DepTime3)-4,(int)SIZE(DepTime3)) as DepTime4,
+        substring(CRSDepTime3,(int)SIZE(CRSDepTime3)-4,(int)SIZE(CRSDepTime3)) as CRSDepTime4,
+        substring(ArrTime3,(int)SIZE(ArrTime3)-4,(int)SIZE(ArrTime3)) as ArrTime4,
+        substring(CRSArrTime3,(int)SIZE(CRSArrTime3)-4,(int)SIZE(CRSArrTime3)) as CRSArrTime4;
+
+prueba = limit rita2 5;
+dump prueba;
+
+(1987,10,14,3,741,730,912,849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,14,0741,0730,0912,0849)
+(1987,10,15,4,729,730,903,849,PS,1451,NA,94,79,NA,14,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,15,0729,0730,0903,0849)
+(1987,10,17,6,741,730,918,849,PS,1451,NA,97,79,NA,29,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,17,0741,0730,0918,0849)
+(1987,10,18,7,729,730,847,849,PS,1451,NA,78,79,NA,-2,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,18,0729,0730,0847,0849)
+(1987,10,19,1,749,730,922,849,PS,1451,NA,93,79,NA,33,19,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,10,19,0749,0730,0922,0849)
+
+
+rita3 = foreach rita2 generate Year, Month2 as Month, DayofMonth2 as DayofMonth, $3,
+        DepTime4 as DepTime, CRSDepTime4 as CRSDepTime, ArrTime4 as ArrTime, CRSArrTime4 as CRSArrTime, 
+        $8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28, 
+        CONCAT(Year,CONCAT('-',CONCAT(Month2,CONCAT('-',CONCAT(DayofMonth2,CONCAT(' ',CONCAT(substring(CRSDepTime4,0,2),CONCAT(':',CONCAT(substring(CRSDepTime4,2,4),':00'))))))))) as flight_date;
+
+
+
+store rita3 into 'prgunta5' using PigStorage(',');
+
+hadoop fs -get /user/pandora/prgunta5/part-m-00000  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00001  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00002  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00003  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00004  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00005  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00006  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00007  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00008  /home/pandora/prgunta5; 
+hadoop fs -get /user/pandora/prgunta5/part-m-00009  /home/pandora/prgunta5; 
+
+cat /home/pandora/prgunta5/part-m-00000 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00001 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00002 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00003 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00004 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00005 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00006 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00007 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00008 >> /home/pandora/prgunta5/ritafecha.csv; 
+cat /home/pandora/prgunta5/part-m-00009 >> /home/pandora/prgunta5/ritafecha.csv; 
+
+hadoop fs -put /home/pandora/prgunta5/ritafecha.csv ritafecha
+
+
+rita3 = LOAD 'ritafecha/ritafecha.csv' USING PigStorage(',') AS 
+( Year:chararray, Month:chararray, DayofMonth:chararray, DayOfWeek:chararray,
+     DepTime:chararray, CRSDepTime:chararray, ArrTime:chararray, CRSArrTime:chararray,
+     UniqueCarrier:chararray, FlightNum:chararray, TailNum:chararray, ActualElapsedTime:chararray,
+     CRSElapsedTime:chararray, AirTime:chararray, ArrDelay:chararray, DepDelay:chararray,
+     Origin:chararray, Dest:chararray, Distance:chararray, TaxiIn:chararray, TaxiOut:chararray,
+     Cancelled:chararray, CancellationCode:chararray, Diverted:chararray, CarrierDelay:chararray,
+     WeatherDelay:chararray, NASDelay:chararray, SecurityDelay:chararray, LateAircraftDelay:chararray,
+     FlightDate:chararray );
+     
+    
+prueba = LIMIT rita3 5;
+dump prueba;
+
+(1987,10,14,3,0741,0730,0912,0849,PS,1451,NA,91,79,NA,23,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1987-10-14 07:30:00)
+(1987,10,15,4,0729,0730,0903,0849,PS,1451,NA,94,79,NA,14,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1987-10-15 07:30:00)
+(1987,10,17,6,0741,0730,0918,0849,PS,1451,NA,97,79,NA,29,11,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1987-10-17 07:30:00)
+(1987,10,18,7,0729,0730,0847,0849,PS,1451,NA,78,79,NA,-2,-1,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1987-10-18 07:30:00)
+(1987,10,19,1,0749,0730,0922,0849,PS,1451,NA,93,79,NA,33,19,SAN,SFO,447,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1987-10-19 07:30:00)
+
+
+
+
+por_aerolinea = GROUP rita3 by UniqueCarrier;
+prueba = LIMIT por_aerolinea 5;
+dump prueba;
+
+por_aerolinea_f  = foreach por_aerolinea generate flatten($1);
+prueba = LIMIT por_aerolinea_f 5;
+dump prueba;
+
+
+prueba = LIMIT por_aerolinea_f 5;
+dump prueba;
+(1988,12,23,5,1925,1840,2210,2112,AA,1387,NA,225,212,NA,58,45,ORD,SLC,1249,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1988-12-23 18:40:00)
+(1988,12,25,7,1854,1840,2137,2112,AA,1387,NA,223,212,NA,25,14,ORD,SLC,1249,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1988-12-25 18:40:00)
+(1988,12,27,2,0000,1840,0000,2112,AA,1387,NA,NA,212,NA,NA,NA,ORD,SLC,1249,NA,NA,1,NA,0,NA,NA,NA,NA,NA,1988-12-27 18:40:00)
+(1988,12,28,3,1946,1840,2226,2112,AA,1387,NA,220,212,NA,74,66,ORD,SLC,1249,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1988-12-28 18:40:00)
+(1988,12,29,4,1856,1840,2119,2112,AA,1387,NA,203,212,NA,7,16,ORD,SLC,1249,NA,NA,0,NA,0,NA,NA,NA,NA,NA,1988-12-29 18:40:00)
+
+
+vuelos = FOREACH por_aerolinea_f {
+    numeros = DISTINCT FlightNum;
+    GENERATE UniqueCarrier, COUNT (numeros) as cuenta;
+} 
+
+vuelos_ord = ORDER vuelos BY cuenta;
+prueba = LIMIT vuelos_ord 5;
+
+
+store vuelos_ord into 'vuelos_ord' using PigStorage(',');
+
+
+--------------
+Pregunta 8:
+
+Para el número de retrasos por aerolínea y poder identificar quién es la que más se retrasa hacemos:
+
+with pregunta as(
+select uniquecarrier,
+count(*) over(
+ partition by uniquecarrier
+ ) as retrasos
+from rita
+where year=1999 and (arrdelay>0 or depdelay>0)
+)
+select uniquecarrier, retrasos
+from pregunta
+group by uniquecarrier, retrasos
+order by retrasos desc
+
+
+hive> create table pregunta8 as select * from ritalimpio6 where arrdelay>0 or depdelay>0;
+2013-05-12 22:34:51,997 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 778.9 sec
+MapReduce Total cumulative CPU time: 12 minutes 58 seconds 900 msec
+Ended Job = job_201305112004_0017
+Ended Job = -646900251, job is filtered out (removed at runtime).
+Ended Job = 1842392416, job is filtered out (removed at runtime).
+Moving data to: hdfs://localhost:54310/tmp/hive-pandora/hive_2013-05-12_21-49-54_070_163541234122297645/-ext-10001
+Moving data to: hdfs://localhost:54310/user/hive/warehouse/pregunta8
+Table default.pregunta8 stats: [num_partitions: 0, num_files: 3, num_rows: 0, total_size: 721922643, raw_data_size: 0]
+6098070 Rows loaded to hdfs://localhost:54310/tmp/hive-pandora/hive_2013-05-12_21-49-54_070_163541234122297645/-ext-10000
+MapReduce Jobs Launched: 
+Job 0: Map: 3   Cumulative CPU: 778.9 sec   HDFS Read: 757772695 HDFS Write: 721922643 SUCCESS
+Total MapReduce CPU Time Spent: 12 minutes 58 seconds 900 msec
+OK
+Time taken: 2703.173 seconds
+
+
+En pregunta8 tenemos todos los vuelos con algún retraso.
+
+
+create table pregunta82 as select uniquecarrier, count(*) as retrasos from pregunta8 group by uniquecarrier order by retrasos desc;
+
+2013-05-14 12:02:30,685 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.18 sec
+MapReduce Total cumulative CPU time: 3 seconds 180 msec
+Ended Job = job_201305141141_0005
+Moving data to: hdfs://localhost:54310/user/hive/warehouse/pregunta82
+Table default.pregunta82 stats: [num_partitions: 0, num_files: 1, num_rows: 0, total_size: 141, raw_data_size: 0]
+14 Rows loaded to hdfs://localhost:54310/tmp/hive-pandora/hive_2013-05-14_12-00-25_065_5016223025565141731/-ext-10000
+MapReduce Jobs Launched: 
+Job 0: Map: 2  Reduce: 1   Cumulative CPU: 32.41 sec   HDFS Read: 494079347 HDFS Write: 434 SUCCESS
+Job 1: Map: 1  Reduce: 1   Cumulative CPU: 3.18 sec   HDFS Read: 891 HDFS Write: 141 SUCCESS
+Total MapReduce CPU Time Spent: 35 seconds 590 msec
+OK
+Time taken: 126.684 seconds
+
+
+hive> select * from pregunta82 limit 5;
+OK
+DL	605768
+AA	561957
+UA	452585
+PI	451607
+US	434114
+Time taken: 0.24 seconds
+

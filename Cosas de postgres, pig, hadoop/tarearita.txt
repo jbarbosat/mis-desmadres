@@ -1,0 +1,102 @@
+
+
+    Explore
+    Gist
+    Blog
+    Help
+
+    jbarbosat
+
+    0
+    0
+
+private nanounanue / itam-big-data
+
+    Code
+    Network
+    Pull Requests 0
+    Issues 2
+    Wiki
+    Graphs
+
+    Tags
+
+    Files
+    Commits
+    Branches 1
+
+itam-big-data / clase / jbarbosat / tarea_4 /
+
+or cancel
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+Tarea 4.
+========================================================
+Lizbeth Necoechea, Jessica Barbosa.
+----------------
+## 20 de marzo de 2013
+Empezamos probando con sólo un año y después ya lo corrimos sobre todo RITA.
+Pregunta 1:
+--------------------------------------------------------
+Primer intento, que repite el primer vuelo de cada avión de cada aerolínea muchas veces:
+```{sql}
+select uniquecarrier, tailnum, 
+min(flight_date) over (
+ partition by uniquecarrier
+ order by flight_date
+ ) as vuelo1_aerolinea,
+min(flight_date) over (
+ partition by uniquecarrier, tailnum
+ order by flight_date
+ ) as vuelo1_avion
+from rita
+where year=1999
+order by uniquecarrier,tailnum;
+```
+Otro intento, pero no se puede ver quién es el primer vuelo para cada aerolínea.
+```{sql}
+with primeros as (
+select distinct uniquecarrier, tailnum,
+row_number() over(
+ partition by uniquecarrier
+ order by flight_date
+ ) as vuelo1_aerolinea,
+row_number()  over (
+ partition by uniquecarrier, tailnum

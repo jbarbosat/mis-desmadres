@@ -1,0 +1,294 @@
+Para desinstalar todo...
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo /sbin/SystemStarter stop postgresql-8.3 
+Password:
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo /sbin/SystemStarter stop postgresql-9.1 
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo /sbin/SystemStarter stop postgresql-9.2 
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Applications/PostgreSQL 9.1
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Applications/PostgreSQL 9.2
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /etc/postgres-reg.ini 
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Library/StartupItems/postgresql-9.2
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Library/StartupItems/postgresql-9.1
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Library/PostgreSQL/9.1
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo rm -rf /Library/PostgreSQL/9.2
+MacBook-Air-de-Jessica:~ PandoraMac$ sudo dscl . delete /users/postgres
+MacBook-Air-de-Jessica:~ PandoraMac$ 
+
+
+reinstalé postgres 9.2 y funcionó mejor porque ya no me dejaba conectarme al server... 
+y bajé quién sabe qué madres con el Stack Builder...
+
+Una vez instalado hay que cambiarse al usuario postgres
+
+> sudo su postgres
+
+Luego con ese usuario tecleen
+
+> psql
+#
+
+(el gatito es el prompt de psql)
+
+Si funciona van muy bien!
+
+Ahora, por default, postgres se instala en raíz y lo mismo sus bases,
+escojan un disco donde tengan mucho espacio (como 50Gb) y creen una
+carpeta llamada "bigdata-disk"
+
+La ayuda en psql se obtiene con \h
+
+Dentro del psql tecleen,
+
+# create user su_nombre_de_usuario with superuser;
+
+# alter user su_nombre_de_usuario password 'contraseña'
+
+# create tablespace bigdata-space owner su_nombre_de_usuario location
+'path_a_/bigdata-disk';
+
+ESTO NO FUNCIONA! CREé LA CARPETA /Users/bigdata-disk y creé el table space desde el usuario postgresql... así, abriendo la sesión en mac
+O bien, cuando armé la carpeta en el disco duro externo ya no hubo pedo
+
+Luego
+
+# create database bigdata-db owner su_nombre_usuario tablespace
+bigdata-space
+
+postgres=# create database bigdata_db owner postgres tablespace bigdata_space;
+CREATE DATABASE
+
+Salgamos de psql con Ctrl-D
+
+Cambiemos de usuario con Ctrl-D
+
+Y tecleen
+
+> psql -d bigdata-db -U su_nombre_usuario -W
+psql -d bigdata_db
+
+
+#Y para descomprimir todo
+
+for f in *.bz2
+do 
+bunzip2 -k "$f"
+header=`head -1 "${f%.*}"`;
+awk FNR-1 "${f%.*}" >> rita.csv && rm "${f%.*}"
+done
+sed -i "1i$header" rita.csv
+
+#Y para volver a limpiar todos los archivos...
+
+iconv -f iso-8859-1 -t utf-8 2001.csv > 2001utf.csv
+awk '{sub("ä","X"); print}' 2001utf.csv > 2001mod.csv
+awk '{sub("æ","Z"); print}' 2001mod.csv > 2001mod2.csv
+awk '{sub("â","W"); print}' 2001mod2.csv > 2001fin.csv
+
+iconv -f iso-8859-1 -t utf-8 2002.csv > 2002utf.csv
+awk '{sub("ä","X"); print}' 2002utf.csv > 2002mod.csv
+awk '{sub("æ","Z"); print}' 2002mod.csv > 2002mod2.csv
+awk '{sub("â","W"); print}' 2002mod2.csv > 2002fin.csv
+
+
+Para descomprimir...
+
+for f in *.bz2; do bunzip2 -k "$f"; done
+
+
+
+split -l 1000000 rita.csv rita_
+
+for f in rita_*
+do
+sql="\copy dirty_rita from $f with header csv;";
+echo $sql
+echo "-------------------------------"
+date
+/Library/PostgreSQL/9.2/bin/psql -U postgres bigdata_db -c "$sql"
+echo "*******************************"
+date
+done
+
+
+
+
+Truncate table rita;
+drop table rita;
+
+
+CREATE UNLOGGED TABLE dirty_rita
+(Year varchar,
+ Month varchar,
+ DayofMonth varchar,
+ DayOfWeek varchar,
+ DepTime varchar,
+ CRSDepTime varchar,
+ ArrTime varchar,
+ CRSArrTime varchar,
+ UniqueCarrier varchar,
+ FlightNum varchar,
+ TailNum varchar,
+ ActualElapsedTime varchar,
+ CRSElapsedTime varchar,
+ AirTime varchar,
+ ArrDelay varchar,
+ DepDelay varchar,
+ Origin varchar,
+ Dest varchar,
+ Distance varchar,
+ TaxiIn varchar,
+ TaxiOut varchar,
+ Cancelled varchar,
+ CancellationCode varchar,
+ Diverted varchar,
+ CarrierDelay varchar,
+ WeatherDelay varchar,
+ NASDelay varchar,
+ SecurityDelay varchar,
+ LateAircraftDelay varchar )
+WITH (
+  OIDS=FALSE
+);
+
+
+CREATE UNLOGGED TABLE rita
+(Year varchar,
+ Month varchar,
+ DayofMonth varchar,
+ DayOfWeek varchar,
+ DepTime varchar,
+ CRSDepTime varchar,
+ ArrTime varchar,
+ CRSArrTime varchar,
+ UniqueCarrier varchar,
+ FlightNum varchar,
+ TailNum varchar,
+ ActualElapsedTime varchar,
+ CRSElapsedTime varchar,
+ AirTime varchar,
+ ArrDelay varchar,
+ DepDelay varchar,
+ Origin varchar,
+ Dest varchar,
+ Distance varchar,
+ TaxiIn varchar,
+ TaxiOut varchar,
+ Cancelled varchar,
+ CancellationCode varchar,
+ Diverted varchar,
+ CarrierDelay varchar,
+ WeatherDelay varchar,
+ NASDelay varchar,
+ SecurityDelay varchar,
+ LateAircraftDelay varchar, 
+ flight_date timestamp);
+
+CREATE OR REPLACE FUNCTION rita_insert()
+RETURNS trigger AS
+$BODY$
+ BEGIN
+CASE WHEN NEW.flight_date < '1988-01-01' 
+THEN INSERT INTO rita_1987 VALUES (NEW.*);
+WHEN NEW.flight_date < '1989-01-01' 
+THEN INSERT INTO rita_1988 VALUES (NEW.*);
+WHEN NEW.flight_date < '1990-01-01' 
+THEN INSERT INTO rita_1989 VALUES (NEW.*);
+WHEN NEW.flight_date < '1991-01-01'
+THEN INSERT INTO rita_1990 VALUES (NEW.*);
+WHEN NEW.flight_date < '1992-01-01'
+THEN INSERT INTO rita_1991 VALUES (NEW.*);
+WHEN NEW.flight_date < '1993-01-01'
+THEN INSERT INTO rita_1992 VALUES (NEW.*);
+WHEN NEW.flight_date < '1994-01-01'
+THEN INSERT INTO rita_1993 VALUES (NEW.*);
+WHEN NEW.flight_date < '1995-01-01'
+THEN INSERT INTO rita_1994 VALUES (NEW.*);
+WHEN NEW.flight_date < '1996-01-01'
+THEN INSERT INTO rita_1995 VALUES (NEW.*);
+WHEN NEW.flight_date < '1997-01-01'
+THEN INSERT INTO rita_1996 VALUES (NEW.*);
+WHEN NEW.flight_date < '1998-01-01'
+THEN INSERT INTO rita_1997 VALUES (NEW.*);
+WHEN NEW.flight_date < '1999-01-01'
+THEN INSERT INTO rita_1998 VALUES (NEW.*);
+WHEN NEW.flight_date < '2000-01-01'
+THEN INSERT INTO rita_1999 VALUES (NEW.*);
+WHEN NEW.flight_date < '2001-01-01'
+THEN INSERT INTO rita_2000 VALUES (NEW.*);
+WHEN NEW.flight_date < '2002-01-01'
+THEN INSERT INTO rita_2001 VALUES (NEW.*);
+WHEN NEW.flight_date < '2003-01-01'
+THEN INSERT INTO rita_2002 VALUES (NEW.*);
+WHEN NEW.flight_date < '2004-01-01'
+THEN INSERT INTO rita_2003 VALUES (NEW.*);
+WHEN NEW.flight_date < '2005-01-01'
+THEN INSERT INTO rita_2004 VALUES (NEW.*);
+WHEN NEW.flight_date < '2006-01-01'
+THEN INSERT INTO rita_2005 VALUES (NEW.*);
+WHEN NEW.flight_date < '2007-01-01'
+THEN INSERT INTO rita_2006 VALUES (NEW.*);
+WHEN NEW.flight_date < '2008-01-01'
+THEN INSERT INTO rita_2007 VALUES (NEW.*);
+WHEN NEW.flight_date < '2009-01-01'
+THEN INSERT INTO rita_2008 VALUES (NEW.*);
+ELSE
+INSERT INTO rita_overflow VALUES (NEW.*);
+END CASE;
+RETURN NULL;
+END;
+$BODY$
+ LANGUAGE plpgsql VOLATILE
+COST 100;
+ALTER FUNCTION rita_insert()
+OWNER TO postgres;
+
+
+CREATE TRIGGER rita_insert BEFORE INSERT ON rita
+FOR EACH ROW EXECUTE PROCEDURE rita_insert();
+
+
+CREATE EXTENSION file_fdw;  -- Habilitamos la extensión
+CREATE SERVER file_server FOREIGN DATA WRAPPER file_fdw;  -- Una formalidad
+
+
+CREATE FOREIGN TABLE plane_data
+( tailnum varchar,
+  type varchar,
+  manufacturer varchar,
+  issue_date varchar,
+  model varchar,
+  status varchar,
+  aircraft_type varchar,
+  engine_type varchar,
+  year varchar
+)
+SERVER file_server
+OPTIONS (format 'csv', delimiter ',', 
+         filename '/Users/PandoraMac/RITA/plane_data_limpio.csv', header 'true', null '');
+
+ALTER FOREIGN TABLE plane_data OPTIONS ( SET filename '/Users/PandoraMac/RITA//plane_data_limpio.csv' ); 
+
+
+CREATE FOREIGN TABLE carriers
+( Code varchar, 
+Description varchar )
+SERVER file_server
+OPTIONS (format 'csv', delimiter ',', filename '/Users/PandoraMac/RITA/carriers.csv', header 'true', null '');
+
+
+ALTER FOREIGN TABLE carriers OPTIONS ( SET filename '/Users/PandoraMac/RITA//carriers.csv' ); 
+
+
+CREATE FOREIGN TABLE airports
+( iata varchar,
+airport varchar,
+city varchar,
+state varchar,
+country varchar,
+lat varchar,
+long varchar)
+SERVER file_server
+OPTIONS (format 'csv', delimiter ',', filename '/Users/PandoraMac/RITA/airports.csv', header 'true', null '');
+
+
+ALTER FOREIGN TABLE airports OPTIONS ( SET filename '/Users/PandoraMac/RITA//airports.csv' ); 
+
