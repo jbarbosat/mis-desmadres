@@ -34,3 +34,25 @@ do bunzip2 -k "$f";
 done
 ````
 
+
+Y para lo que hizo liz en best buy de parsear xmls..
+```{bash}
+echo "Empieza xml2csv"
+contador=0
+for f in Documentos/Proyecto/product_data/products/products_*
+do
+java -jar xml2csv-conv.jar -k "sku, productId, name, type, startDate,
+new, active, activeUpdateDate, regularPrice, salePrice, onSale,
+minimumDisplayPrice, priceUpdateDate, digital, preowned,
+customerReviewCount, customerReviewAverage, freeShipping,
+inStoreAvailability, onlineAvailability, releaseDate, shippingCost,
+shortDescription, class, department, manufacturer, inStorePickup,
+friendsAndFamilyPickup, homeDelivery, quantityLimit, orderable,
+sellerId" $f Proyecto/CSVs/resultado$contador.csv
+let contador+=1
+echo "******** "$contador" *********"
+date
+done
+````
+
+
