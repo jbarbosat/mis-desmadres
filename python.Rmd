@@ -33,17 +33,16 @@ rm /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python-config
 ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pydoc3.3 /usr/bin/pydoc3
 ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python3.3 /usr/bin/python3
 ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pythonw3.3 /usr/bin/pythonw3
-
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python3-config /usr/bin/python-config
 
 
 
 Ahora, quiero usar ipython, así que bajé anaconda pero eso esó s´ólo jala con 2.7! nos matamos.
 
-Para correr el 3.3....
-
-Esto es un desmadrote....
-
+Al final resultó que el el error estaba en un BeautifulSoup que estaba corriendo. 
+soup = BeautifulSoup(htmltext,'html.parser')
 
 
 
-ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python3-config /usr/bin/python-config
+
+
