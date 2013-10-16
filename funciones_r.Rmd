@@ -1,0 +1,126 @@
+
+#sim2.dat<-function(n,theta){
+#  u<-runif(n)
+#  k<-1
+#  P<--(1-theta)/log(theta)
+#  F<-P
+  
+#  for(j in 1:n){
+#    repeat {
+#      P<-k*(1-theta)*P/(k+1)
+#      k<-k+1
+#      F<-F+P
+#      if(u[j]<F){break}
+#    }
+#    u[j]<-k
+#  }
+#  u
+#}
+
+
+# Funciones para evitar loops
+
+# apply
+set.seed(1234)
+X<-matrix(sample(1:20,20),ncol=4)
+apply(X,MARGIN=2,FUN=mean)   # operacion sobre columnas (2), FUN=funcion
+
+X[1,1]<-NA
+apply(X,MARGIN=2,FUN=mean)
+apply(X,MARGIN=2,FUN=mean,na.rm=TRUE)
+
+# Debido al frequente uso de las medias por columnas (o renglones), existe
+# una funcion: colMeans (rowMeans)
+
+colMeans(X,na.rm=TRUE)
+
+# Similarmente colSums, appply, sapply
+
+# aggregate (funciona en dataframes. 
+#Separa datos en subgrupos definidos por un vector)
+
+Z<-1:5
+T<-5:1
+vec1<-c(rep("A1",2),rep("A2",2),rep("A3",1))
+vec2<-c(rep("B1",3),rep("B2",2))
+df<-data.frame(Z,T,vec1,vec2)
+
+aggregate(df[,1:2],list(FactorA=vec1),sum) #sumamos de acuerdo con la categoría
+
+
+# tambien pueden definirse por un vector generado por 2 factores
+
+aggregate(df[,1:2],list(FactorA=vec1,FactorB=vec2),sum)
+
+
+# sweep (aplica un solo procedimiento a todos los margenes de una tabla)
+
+set.seed(1234)
+X<-matrix(sample(12),ncol=3)
+mean.X<-apply(X,2,mean) #promedio x columnas.
+sd.X<-apply(X,2,sd) #sd x columnas
+
+Xc<-sweep(X,2,mean.X,FUN="-")
+
+Xcr<-sweep(Xc,2,sd.X,FUN="/")
+
+# que pasa si calculamos una regresion para cada nivel de vec1
+
+set.seed(1234)
+T<-rnorm(100)
+Z<-rnorm(100)+3*T+5
+vec1<-c(rep("A1",25),rep("A2",25),rep("A3",50))
+don<-data.frame(Z,T)
+
+by(don,list(FactorA=vec1),summary)  # resumen de cada variable para cada nivel del
+                                    # factor vec1
+aggregate(don,list(FactorA=vec1),sum) # suma de cada variable de cada nivel
+by(don[,1],list(FactorA=vec1),sum)   # suma de todaslas para cada nivel
+head(don)
+# mas dificil
+
+myfunction<-function(x){
+  summary(lm(Z~T,data=x))$coef
+}
+
+
+by(don,vec1,myfunction)
+
+
+# replicate
+
+replicate(n=8,mean(rnorm(100)))  # repite una expresion n veces. Equivale a
+                                 # un for (i in 1:n)
+
+# outer  (repite una funcion para cada ocurrencia de la combinacion de 2 vectores)
+
+month<-c("Enero","Febrero","Marzo")
+year<-2008:2010
+outer(month,year,FUN="paste",sep="-")
+
+
+##################################################################
+##################################################################
+
+mysum<-function(n){
+  result<-sum(1:n)
+  return(result)   # objetos que traen el resultado
+}
+
+res<-mysum(4.5)
+
+res
+
+# mejorando
+
+mysum<-function(n){
+  if(n<=0) stop("n debe ser entero positivo")
+  if(floor(n)!=n) warning(paste("redondea",n,"a",floor(n)))
+  result<-sum(1:floor(n))
+  return(result)   # objetos que traen el resultado
+}
+
+
+mysum(4.367)
+mysum(-2)
+mysum(4)
