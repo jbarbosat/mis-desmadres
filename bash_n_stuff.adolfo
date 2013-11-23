@@ -10,7 +10,7 @@ iconv -f iso-8859-1 -t utf-8 train.csv > train_utf8.csv
 
 FOR
 
-Queríamos para cada archivo con normbre rita_algo subirlos a la base en postgres...
+Queríamos para cada archivo con nombre rita_algo subirlos a la base en postgres...
 
 ```{bash}
 for f in rita_*
@@ -25,8 +25,8 @@ date
 done
 ```
 
-Y para deszippear cosas...
 
+Y para deszippear cosas...
 
 ```{bash}
 for f in *.bz2; 
@@ -34,3 +34,37 @@ do bunzip2 -k "$f";
 done
 ````
 
+
+Y para lo que hizo liz en best buy de parsear xmls..
+
+```{bash}
+echo "Empieza xml2csv"
+contador=0
+for f in Documentos/Proyecto/product_data/products/products_*
+do
+java -jar xml2csv-conv.jar -k "sku, productId" $f Proyecto/CSVs/resultado$contador.csv
+let contador+=1
+echo "******** "$contador" *********"
+date
+done
+````
+
+
+Y para pepsi.. en cada carpeta hay muchos archivos con los mismos nombres. Quiero meterme a la carpeta,
+agegarle una columna a cada archivo dentro de ella con el nombre de la carpeta y luego pegar los archivos en otro lado.
+
+```{bash}
+archivos=( "R_indpro.txt.mod" "R_dcd.txt.mod" "R_indtie.txt.mod" "R_indcli.txt.mod" "R_r2.txt.mod" )
+for folder in *
+do
+  date
+  cd $folder
+  for archivo in "${archivos[@]}"
+    do
+    path="/Users/PandoraMac/Documents/David/pepsi2/Datos_R/$archivo"
+    awk -v carpeta=$folder -v file=$archivo -v dir=$path 'BEGIN{ FS = "|" }; { print carpeta"|"$0 >> dir }' $archivo  
+  done
+  cd ..
+  date
+done
+```

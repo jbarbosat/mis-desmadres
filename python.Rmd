@@ -1,0 +1,48 @@
+01-octubre-2013
+
+
+Mis notas mentales de instalación de python.
+
+Estaba corriendo algo muy feliz epro tronaba y resultó que había que actualizar python...
+
+Bajé el nuevo python pero en la consola se seguía corriendo el viejito!
+
+
+
+
+http://wolfpaulus.com/jounal/mac/installing_python_osx/
+
+#!/bin/bash
+
+mv /Library/Frameworks/Python.framework/Versions/3.3 /System/Library/Frameworks/Python.framework/Versions
+chown -R root:wheel /System/Library/Frameworks/Python.framework/Versions/3.3
+ 
+rm /System/Library/Frameworks/Python.framework/Versions/Current
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3 /System/Library/Frameworks/Python.framework/Versions/Current
+ 
+rm /usr/bin/pydoc
+rm /usr/bin/python
+rm /usr/bin/pythonw
+rm /usr/bin/python-config
+ 
+rm /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pydoc
+rm /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python
+rm /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pythonw
+rm /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python-config
+ 
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pydoc3.3 /usr/bin/pydoc3
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python3.3 /usr/bin/python3
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/pythonw3.3 /usr/bin/pythonw3
+ln -s /System/Library/Frameworks/Python.framework/Versions/3.3/bin/python3-config /usr/bin/python-config
+
+
+
+Ahora, quiero usar ipython, así que bajé anaconda pero eso esó s´ólo jala con 2.7! nos matamos.
+
+Al final resultó que el el error estaba en un BeautifulSoup que estaba corriendo. 
+soup = BeautifulSoup(htmltext,'html.parser')
+
+
+
+
+
