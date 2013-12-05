@@ -219,7 +219,10 @@ def write_to_file(hdfs_path,todo_array,dates_array,links_array,nwspp_array,title
 
 	print todo_array
 	#hadoopy.writetb(hdfs_path,todo_array)
-
+	f = codecs.open ("/root/"+archivo, 'a','utf-8')
+	f.write("".join(todo_array).decode('utf-8'))
+	f.close()
+	
 	print "Done en Hadoopy"
 
 
