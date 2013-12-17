@@ -313,7 +313,7 @@ if __name__ == '__main__':
 	fecha0 = year0+"-"+mes0+"-"+dia0
 	fecha1 = year1+"-"+mes1+"-"+dia1
 
-	busqueda_si = "crisis fear"
+	busqueda_si = "syria fear"
 	busqueda_no = "dog cat"
 	busqueda_exacta = "red cross"
 	#busqueda_exacta = ""
