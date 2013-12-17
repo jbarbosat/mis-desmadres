@@ -222,7 +222,7 @@ def get_texto(br, links_array):
 	
 	for url in links_array:
 		texto = get_page(query,br)
-		f = codecs.open ("/home/ec2-user/"+url.replace(':',' ').replace('/','|'), 'a','utf-8')
+		f = codecs.open ("/home/ec2-user/tesis/"+url.replace(':',' ').replace('/','|'), 'a','utf-8')
 		f.write("".join(str(texto)).decode('utf-8'))
 		f.close()
 
