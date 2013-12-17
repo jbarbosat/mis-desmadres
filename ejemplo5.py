@@ -331,7 +331,7 @@ if __name__ == '__main__':
 	# Cuánto tiempo nos toma el scrappeo?
 	start_time = datetime.datetime.now()
 
-	archivo = "/home/ec2-user/tesis"+str(datetime.datetime.now()).replace(" ","_").replace(":","-")+".reliefweb.out"
+	archivo = "/home/ec2-user/tesis/"+str(datetime.datetime.now()).replace(" ","_").replace(":","-")+".reliefweb.out"
 
 	br = create_browser()
 
