@@ -222,7 +222,7 @@ def get_texto(br, links_array):
 	
 	for url in links_array:
 		texto = get_page(query,br)
-		f = codecs.open (url.replace(':',' ').replace('/','|'), 'a','utf-8')
+		f = codecs.open ("/home/ec2-user/"+url.replace(':',' ').replace('/','|'), 'a','utf-8')
 		f.write("".join(str(texto)).decode('utf-8'))
 		f.close()
 
@@ -331,7 +331,7 @@ if __name__ == '__main__':
 	# Cuánto tiempo nos toma el scrappeo?
 	start_time = datetime.datetime.now()
 
-	archivo = str(datetime.datetime.now()).replace(" ","_").replace(":","-")+".reliefweb.out"
+	archivo = "/home/ec2-user/"+str(datetime.datetime.now()).replace(" ","_").replace(":","-")+".reliefweb.out"
 
 	br = create_browser()
 
