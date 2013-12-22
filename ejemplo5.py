@@ -50,7 +50,7 @@ import html5lib
 import re
 import codecs
 import datetime
-from sets import Set
+#from sets import Set
 from time import sleep
 from random import randint
 import os
