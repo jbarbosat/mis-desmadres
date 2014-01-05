@@ -1,8 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 6-dic-2013
+# 06-dic-2013
 # clase TelcelScrapper
+
+#04-enero-2014
+#Tronaba si no hay saldo de regalo pero ya lo corregí.
+#Tbn alargué el tiempo de dormir.
 
 from datetime import datetime
 
@@ -20,8 +24,8 @@ import codecs
 class TelcelScrapper():
 
     # Constantes "cool behaviour"
-    MIN_NAPTIME = 10
-    MAX_NAPTIME = 20 # Máximo tiempo de dormir
+    MIN_NAPTIME = 20
+    MAX_NAPTIME = 30 # Máximo tiempo de dormir
 
 
     def __init__(self, logger, session, archivo):
@@ -68,8 +72,12 @@ class TelcelScrapper():
     def get_saldo(self, texto_div):
         soup2 = BeautifulSoup(texto_div)
         renglones = soup2.findAll('tr')
+        print renglones
         amigo = renglones[1].findAll('strong')[0]
-        regalo = renglones[2].findAll('strong')[0]
+        if len(renglones)>2:    
+            regalo = renglones[2].findAll('strong')[0]
+        else:
+            regalo = 0
         
         return  'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace('<strong>','').replace('\n','').replace('</strong>','').replace('  ','')+', regalo: '+str(regalo).replace('<strong>','').replace('\n','').replace('</strong>','').replace('  ','')+"\n"
 
