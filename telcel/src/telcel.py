@@ -4,6 +4,10 @@
 #06-dic-2013
 #Para monitorear diario mi saldo en telcel
 
+#04-enero-2014
+#Tronaba si no hay saldo de regalo pero ya lo corregí.
+#Tbn alargué el tiempo de dormir.
+
 import sys
 import os
 from datetime import datetime
