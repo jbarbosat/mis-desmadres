@@ -1,6 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# 13-ene-2014
+# Y más broncas. hay unos numeritos del demonio en la dirección de google que matan todo. opción b: selenium
+# Que abre un browser e introduce la búsqueda... De ahí me robo la url para que tenga los inches numeritos
+# y luego jalo todo con un browser de mentis.
+
 # 24-dic-2013
 
 # Bronca: Google news ya no deja filtrar por fecha. Está la opción pero no regresa ni madres.
@@ -10,8 +15,12 @@
 # Habrá que correr esta madre cada mes para obtener el índice de las noticias.
 
 # run ejemplo5.py -b "granjero vigilancia" -e ""
+# run gnews.py -p "colombia" -k "'humanitarian aid' OR 'aid worker' OR ambulance OR volunteer OR hospital OR doctor OR 'medical staff' attack OR threat OR kidnap OR hostage OR arrest OR assassinate OR dead OR death OR kill OR murder OR massacre OR wound OR injure OR torture OR hurt OR survive OR uninjured OR hijack"
 
 # Cambios:
+# - Argumentos de entrada: la búsqueda tal cual la teclearíamos en la página de google + un país o una ong
+# 
+# ----------------------------------------------------------------------------------------
 # - Agregamos código comentado para el eventual retrieving del texto de las noticias.
 # - Cambió la url para buscar mugres...
 # - En get_links, con r_links ESTÁBAMOS omitiendo unos links raros que salían sin abstract ni fecha ni nada...
@@ -20,8 +29,6 @@
 # - Quité busqueda_no de los argumentos de entrada porque no lo estamos usando.
 # - Archivo fails.err que guarda las queries que no se pudieron llevar a cabo por errores de conexión.
 # - En lugar de un for, un while para saber cuándo dejar de buscar noticias.
-
-# ----------------------------------------------------------------------------------------
 # - Ya no estamos quitando repetidos
 # - Pasamos el código a funciones separadas
 # - Cuando la dirección es:
@@ -40,8 +47,7 @@
 # https://bugs.launchpad.net/beautifulsoup/+bug/1026381
 
 #IN: 
-# - Un archivo separado por pipes con mes0, mes1, dia0, dia1, year0, year1, busqueda_si, busqueda_no, busqueda_exacta
-# aunque ahorita lo estoy metiendo a mano
+# - De la consola toma dos argumentos: un país o una organización y la query que queremos hacer
 
 #OUT: 
 # Timestamp.out; un archivo separado por pipes. 
@@ -55,6 +61,8 @@ import urllib
 import mechanize
 from bs4 import BeautifulSoup
 import html5lib
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 #Ya vienen en ubuntu
 import re
 import codecs
@@ -95,6 +103,21 @@ import argparse
 
 ##########################################################################################
 
+def create_browser2():
+	from selenium import webdriver
+	from selenium.webdriver.common.keys import Keys
+
+	driver = webdriver.Firefox()
+	driver.get("http://news.google.com/")
+	assert "Google" in driver.title
+	elem = driver.find_element_by_id("gbqfq")
+	elem.send_keys(palabras1)
+	elem.send_keys(Keys.RETURN)
+	assert "Google" in driver.title
+
+	return driver
+
+
 def create_browser():
 	br = mechanize.Browser()
 	br.set_handle_robots(False)
@@ -103,7 +126,7 @@ def create_browser():
 	return br
 
 
-def make_query(palabras2,num):
+def make_query(palabras1, num, query_base):
 # Armamos la query, la mandamos a googlenews y hacemos soup del código de la página
 
 # Y ahora se volvió un desmadre de queries...
@@ -124,26 +147,70 @@ def make_query(palabras2,num):
 	# &tbs=cdr%3A1%2Ccd_min%3A1%2F1%2F2010%2Ccd_max%3A7%2F1%2F2010
 	# &start=0&tbas=0&tbm=nws
 
-	# Versión para buscar durante el último mes, que un poco peor que no filtrar nada.
-		# https://www.google.com/search?pz=1&cf=all&ned=en_us&hl=en&tbm=nws&gl=us&as_q=mexico%20crisis&as_epq=red%20cross&as_occt=any&as_qdr=m&authuser=0
-	# Esa última es la que estamos usando:
-		# https://www.google.com/search?q=mexico+%22red+cross%22
-		# &hl=es&gl=mx&authuser=0&noj=1&tbm=nws&ei=Pm62UoSTCeWD2gWIlYDwDA
-		# &start=0&sa=N&biw=1095&bih=659&dpr=1
+	# Si buscamos durante el último mes, resulta un poco peor que no filtrar nada.
+	# Si mi búsqueda es: kill OR murder OR attack OR kidnap OR threaten -"red cross" "red crescent" volunteer OR doctor OR "of staff" OR "humanitarian aid" OR hospital OR ambulance
+	# la url es:
+	# https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=kill+OR+murder+OR+attack+OR+kidnap+OR+threaten+-%22red+cross%22+%22red+crescent%22+volunteer+OR+doctor+OR+%22of+staff%22+OR+%22humanitarian+aid%22+OR+hospital+OR+ambulance&oq=kill+OR+murder+OR+attack+OR+kidnap+OR+threaten+-%22red+cross%22+%22red+crescent%22+volunteer+OR+doctor+OR+%22of+staff%22+OR+%22humanitarian+aid%22+OR+hospital+OR+ambulance&gs_l=news-cc.3...474.474.0.979.1.1.0.0.0.0.0.0..0.0...0.0...1ac.1.#authuser=0&gl=us&hl=en&q=kill+OR+murder+OR+attack+OR+kidnap+OR+threaten+-%22red+cross%22+%22red+crescent%22+volunteer+OR+doctor+OR+%22of+staff%22+OR+%22humanitarian+aid%22+OR+hospital+OR+ambulance&start=20&tbm=nws
 
-	base = "https://www.google.com/search?q=" + palabras2 
-	info = "&hl=en&gl=us&authuser=0&noj=1&tbm=nws&ei=Pm62UoSTCeWD2gWIlYDwDA"
-	num_pag = "&start=" + str(num) + "&sa=N&biw=1095&bih=659&dpr=1"
+	# La que usaremos:
 	
-	query = base + info + num_pag
+	# https://www.google.com/search?hl=es&gl=mx&tbm=nws&authuser=0
+	# &q=%22south+korea%22+%22humanitarian+aid%22+OR+%22aid+worker%22+OR+ambulance+OR+volunteer+OR+hospital+OR+doctor+OR+%22medical+staff%22+attack+OR+threat+OR+kidnap+OR+hostage+OR+arrest+OR+assassinate+OR+dead+OR+death+OR+kill+OR+murder+OR+massacre+OR+wound+OR+injure+OR+torture+OR+hurt+OR+survive+OR+uninjured+OR+hijack
+	# &oq=%22south+korea%22+%22humanitarian+aid%22+OR+%22aid+worker%22+OR+ambulance+OR+volunteer+OR+hospital+OR+doctor+OR+%22medical+staff%22+attack+OR+threat+OR+kidnap+OR+hostage+OR+arrest+OR+assassinate+OR+dead+OR+death+OR+kill+OR+murder+OR+massacre+OR+wound+OR+injure+OR+torture+OR+hurt+OR+survive+OR+uninjured+OR+hijack
+	# &gs_l=news-cc.3...1282.1282.0.1663.1.1.0.0.0.0.0.0..0.0...0.0...1ac.1.
+	# #authuser=0&gl=mx&hl=es
+	# &q=%22south+korea%22+%22humanitarian+aid%22+OR+%22aid+worker%22+OR+ambulance+OR+volunteer+OR+hospital+OR+doctor+OR+%22medical+staff%22+attack+OR+threat+OR+kidnap+OR+hostage+OR+arrest+OR+assassinate+OR+dead+OR+death+OR+kill+OR+murder+OR+massacre+OR+wound+OR+injure+OR+torture+OR+hurt+OR+survive+OR+uninjured+OR+hijack
+	# &start=10&tbm=nws
 
-	print query
+	if str(num) == '0':
+		driver = webdriver.Firefox()
+		driver.get("http://news.google.com/")
+		#assert "Google" in driver.title
+		elem = driver.find_element_by_id("gbqfq")
+		elem.send_keys(palabras1)
+		elem.send_keys(Keys.RETURN)
+		#assert "Google" in driver.title
+		#html_text = driver.page_source
+		query = str(driver.current_url)
+		driver.close()
+	else:
+		query = query_base + "&start=" + str(num) + "&tbm=nws"
 
-	return query
+	return query.decode('utf-8')
 
 
+def get_page2(driver, palabras1, num):
+# Regresamos el html de la página actual y damos click en la hoja que sigue de resultados
+# para que quede listo para la próxima búsqueda
 
-def get_page(query,br):
+	htmltext = driver.page_source
+
+	#soup = BeautifulSoup(str(htmltext), 'html.parser')
+
+	# from selenium import webdriver
+	# from selenium.webdriver.common.keys import Keys
+
+	# driver = webdriver.Firefox()
+	# driver.get("http://news.google.com/")
+	# assert "Google" in driver.title
+	# elem = driver.find_element_by_id("gbqfq")
+	# elem.send_keys(palabras1)
+	# elem.send_keys(Keys.RETURN)
+	# assert "Google" in driver.title
+
+	elem = driver.find_element_by_class_name("cur")
+
+	print elem
+
+	soup = ''
+	return soup
+
+
+	#print html_source
+
+	#driver.close()
+
+def get_page(br,query):
 # Y si se muere el internet? Y si google se pone punk?
 	print "Recuperando html de la página."
 	intentos = 0
@@ -356,11 +423,14 @@ def get_texto(br, links_array):
 
 ##########################################################################################
 
-def write_1st_line(archivo,primeralinea):
-	f = codecs.open (archivo, 'a','utf-8')
+def write_1st_line(archivo,primeralinea,query):
+	f = codecs.open (archivo, 'w','utf-8')
 	f.write("".join(primeralinea).decode('utf-8'))
+	f.write("".join(query).decode('utf-8'))
 	f.write("\n")
 	f.close()
+
+	print "Primera línea escrita a archivo."
 
 
 def write_to_file(archivo,dates_array,links_array,nwspp_array,titles_array,abstracts_array):
@@ -422,29 +492,40 @@ if __name__ == '__main__':
 	# parser.add_argument('-d1', '--dia1', help='Dia, sin ceros antes, hasta el que queremos buscar', required=True)
 	# parser.add_argument('-y0', '--year0', help='Anio, a cuatro digitos, desde el que queremos buscar', required=True)
 	# parser.add_argument('-y1', '--year1', help='Anio, a cuatro digitos, hasta el que queremos buscar', required=True)
-	parser.add_argument('-b', '--buscasi', help='Palabras que queremos buscar, entre comillas si son + de 1', required=True)
-	parser.add_argument('-e', '--buscaexacta', help='Frase exacta que queremos buscar, entre comillas si son + de 1', required=True)
+	parser.add_argument('-p', '--pais', help='País sobre el cual queremos buscar, entre comillas si tiene + de 1 palabra', required=False)
+	parser.add_argument('-o', '--org', help='Nombre de la org sobre la cual queremos buscar, entre comillas si tiene + de 1 palabra', required=False)
+	parser.add_argument('-k', '--keywords', help='Keywords, ejemplo \"\'aid worker\' OR doctor kill OR murder\"', required=True)
 	#parser.add_argument('-n', '--buscanot', help='Términos que queremos excluir de la búsqueda, entre comillas si son + de 1', required=False)
 
 	args = parser.parse_args()
 
-	busqueda_si = str(args.buscasi)
-	busqueda_exacta = str(args.buscaexacta)
+	pais= str(args.pais)
+	org = str(args.org)
+	keywords = str(args.keywords).replace('\'','\"') #al meter los argumentos, llevan una comilla
 
 
-	#Hay o no frases exactas que buscar?
-	if busqueda_exacta=="":
-		palabras2 = busqueda_si.replace(" ","+")#+"+-"+busqueda_no.replace(" ","+-") 
+	# Si el país o la org tienen más de una palabra, les ponemos comillas
+
+	if pais!="":
+		if len(re.findall(' ', pais))>0:
+			palabras1 = '\"' + pais + '\" ' + keywords
+		else:
+			palabras1 = pais + ' ' + keywords
 	else:
-		palabras2 = busqueda_si.replace(" ","+")+"+%22"+busqueda_exacta.replace(" ","+")+"%22"#+"+-"+busqueda_no.replace(" ","+-") 
+		if len(re.findall(' ', org))>0:
+			palabras1 = '\"' + org + '\" ' + keywords
+		else:
+			palabras1 = org + ' ' + keywords
 
+
+	# palabras2 = palabras1.replace(" ", "+").replace("\"", "%22").replace("\'", "%22")
+	# print palabras2
 
 	# Constantes "cool behaviour"
 	MIN_NAPTIME = 10 # dormir entre queries
 	MAX_NAPTIME = 20
 	MIN_SLEEPTIME = 50 # Tiempo para dormir luego de error de conexión
 	MAX_SLEEPTIME = 60
-
 
 	# Cuánto tiempo nos toma el scrappeo?
 	start_time = datetime.datetime.now()
@@ -454,6 +535,7 @@ if __name__ == '__main__':
 	#archivo = "/home/ec2-user/tesis/"+str(datetime.datetime.now()).replace(" ","_").replace(":","-")+".gnews.out"
 
 	hits = ""
+	query_base = ""
 
 	br = create_browser()
 
@@ -476,24 +558,37 @@ if __name__ == '__main__':
 		num = str(int(cursor_actual)*10)
 		print "Procesando hoja " + str(cursor_actual) + "."
 
-		query = make_query(palabras2,num)
-		soup = get_page(query,br)
+		query = make_query(palabras1,num,query_base)
+		print "Query base" + query_base
+		soup = get_page(br, query)
+
+		# Escribimos primera línea con metadata
+		if cursor_actual == "0":
+			query_base = query
+			print "Query base" + query_base
+			hits = get_hits(soup)
+			# print hits
+			# print palabras1
+			# print urllib.unquote(query_base)
+			primeralinea = str(palabras1+"|"+hits+"|")#+query)#+"\n")
+			# Esto está rarísimo pero si hago:
+			# primeralinea = str(palabras1+"|"+hits+"|"+query)
+			# ni siquiera lo puede escribir a archivo; me marca error:
+			# UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 99: ordinal not in range(128)
+			# así que escribiré las cosas por separado y ya
+			write_1st_line(archivo,primeralinea,query)
+
 
 		#En qué número de hoja vamos?
 		cursor_anterior = cursor_actual
 		cursor_actual = get_cursor(soup,cursor_anterior)
 
+		# Ahora sí, sacamos las noticias
+
 		news_list = get_all_news(soup)
 
-		if int(cursor_actual) ==0:
-			hits = get_hits(soup)
-			primeralinea = str(fecha0+"|"+fecha1+"|"+palabras2+"|"+hits+"|"+query+"\n")
-			#print primeralinea
-			#todo_array = todo_array + write_1st_line(archivo,primeralinea)
-			write_1st_line(archivo,primeralinea)
-
 		for li in news_list:
-		# Los atributos se van recuperando por cada noticia, salvo abstracts, y se acumulan en u narray
+		# Los atributos se van recuperando por cada noticia, salvo abstracts, y se acumulan en un array
 
 			soup2 = BeautifulSoup(str(li))
 			texto = soup2.findAll('a',attrs={'class':'l'}) 
