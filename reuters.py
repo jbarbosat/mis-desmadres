@@ -1,31 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 24-dic-2013
-# Dada una búsqueda, se recuperan conjuntos de noticias de Alertnet, by Reuters
-# Hay 12 noticias que tienen todos los atributos en cada búsqueda y otras noticias que son related items
-# No se puede filtrar por fecha (salvo 1,3,7 days ago) ni permite hacer búsquedas exactas o excluir términos
-# así que sólo estamos filtrando por país y recuperando todos los resultados
-# no se puede hacer búsquedas exactas...
+# 21-ene-2014
 
-# run reuters.py -b "humanitarian worker death" -p "colombia"
+# OJO: Necesito ver si esto jala 
+
+# Dada una búsqueda, se recuperan conjuntos de noticias de Alertnet, by Reuters, de más reciente a más viejo
+# Hay 12 noticias que tienen todos los atributos en cada búsqueda y otras noticias que son related items
+# No se puede filtrar por fecha (salvo 1,3,7 days ago) ni permite hacer búsquedas exactas o excluir términos.
+# Estábamos filtrando por país y recuperando todos los resultados pero eran muy pocos así que matamos el filtro
+
+# run reuters.py -b "climate change science"
 
 # Notitas:
 # - Aquí no se puede buscar por mes; no hay filtros de fecha. 
 # - Tampoco parece haber chance de hacer búsquedas exactas ni de filtrar cosas que no queremos
-# - Hay noticias y reportes de las organizaciones. Se puede filtrar x organización. Qué queremos? 
-# So far no estoy filtrando x organización.
+# - Hay noticias y reportes de las organizaciones. Se puede filtrar x organización. So far no estoy filtrando x organización.
 # - Queremos sólo recuperar artículos? So far eso estoy haciendo
 # - A diferencia de google news, acá no se repiten noticias
-# - Aquí no hay abstract... Qué onda? guardo todo el html de la noticia? algo así?
+# - Aquí no hay abstract
 # - Qué es mejor: Escribir poquito y echarlo a archivo? O concatenar lo de toda la búsqueda y mandarlo?
 # so far tengo concatenado lo de toda la búsqueda pero no hay bronca con cambiarlo
 # - Hay unas noticias raras que sólo tienen título y que, presumiblemente, son del mismo autor (Reuters)
 # que otras noticias que las contienen... So far las estoy ignorando. Salen como related items...
 
 # Cambios:
-# - Ojo! A diferencia de google news, aquí no hay filtro de fecha
+# - Quitamos el país como filtro
 # ----------------------------------------------------------------------------------------
+# - Ojo! A diferencia de google news, aquí no hay filtro de fecha
 # - Las direcciones cambiaban % por %25. Solución: urllib.unquote
 # http://stackoverflow.com/questions/1695183/how-to-percent-encode-url-parameters-in-python
 # - Modo de instanciar el browser
@@ -54,7 +56,7 @@ import html5lib
 import re
 import codecs
 import datetime
-from sets import Set
+# from sets import Set
 from time import sleep
 from random import randint
 import os
@@ -97,50 +99,50 @@ def create_browser():
 	return br
 
 
-def make_query(busqueda_si,pais,num):
-# "Humanitarian worker" death. Syria. Hoja 1 de resultados. Ordenados por fecha; de lo más nuevo a lo más viejo. Artículos (tbn hay videos)
+def make_query(busqueda_si,num):
+# "Humanitarian worker" death. Hoja 1 de resultados. Ordenados por fecha; de lo más nuevo a lo más viejo. Artículos (tbn hay videos)
 # http://www.trust.org/search/?page=2&q=humanitarian+worker+death&f_type=article&f_country=syria&sbd=1
 # http://www.trust.org/search/
 # ?page=2
 # &q=humanitarian+worker+death
 # &f_type=article
-# &f_country=syria
+# &f_country=syria # QUITMAOS ESTO
 # &sbd=1
 
 	base = "http://www.trust.org/search/?page=" + str(num)
 	si = "&q=" + busqueda_si.replace(" ","+")
 	tipodocs = "&f_type=article"
-	filtro_pais = "&f_country=" + pais
+	#filtro_pais = "&f_country=" + pais
 	ordena_fecha = "&sbd=1" #para ordenar de lo más reciente a lo más viejo
 
-	query = base + si + tipodocs + filtro_pais + ordena_fecha
+	query = base + si + tipodocs + ordena_fecha
 	#print query
 	return query
 
 
 def get_page(query,br):
-# Y si se muere el internet? Y si google se pone punk?
-	print "Recuperando html de la página."
-	intentos = 0
-	max_intentos = 3
-	while intentos<max_intentos:
-		try:
-			htmltext = br.open(query).read()
-			print "Conexión exitosa."
-			break
-		except Exception as e:
-				intentos = intentos + 1
-				n = randint(MIN_SLEEPTIME, MAX_SLEEPTIME) # Número aleatorio entre MIN_SLEEPTIME y MAX_SLEEPTIME
-				print "Falló la conexión, intentando de nuevo en %s segs." % str(n)
-				sleep(n)
+# # Y si se muere el internet? Y si google se pone punk?
+# 	print "Recuperando html de la página."
+# 	intentos = 0
+# 	max_intentos = 3
+# 	while intentos<max_intentos:
+# 		try:
+# 			htmltext = br.open(query).read()
+# 			print "Conexión exitosa."
+# 			break
+# 		except Exception as e:
+# 				intentos = intentos + 1
+# 				n = randint(MIN_SLEEPTIME, MAX_SLEEPTIME) # Número aleatorio entre MIN_SLEEPTIME y MAX_SLEEPTIME
+# 				print "Falló la conexión, intentando de nuevo en %s segs." % str(n)
+# 				sleep(n)
 				
-	if intentos == max_intentos:
-		htmltext = ""
-		print "Número de intentos excedido, omitiendo la búsqueda: " + query
-		f = codecs.open ('fails.err', 'a','utf-8')
-		f.write("".join(query).decode('utf-8'))
-		f.write("\n")
-		f.close()
+# 	if intentos == max_intentos:
+# 		htmltext = ""
+# 		print "Número de intentos excedido, omitiendo la búsqueda: " + query
+# 		f = codecs.open ('fails.err', 'a','utf-8')
+# 		f.write("".join(query).decode('utf-8'))
+# 		f.write("\n")
+# 		f.close()
 
 	# Guardé un ejemplo del html que lee, para hacer pruebas
 
@@ -148,9 +150,9 @@ def get_page(query,br):
 	# f.write(htmltext)
 	# f.close()
 
-	# f = open('texto.html')
-	# htmltext = f.read()
-	# f.close()
+	f = open('texto.html')
+	htmltext = f.read()
+	f.close()
 	
 	#ojo! hay un bug en el parser que usa default! sin 'html.parser', muere
 	soup = BeautifulSoup(htmltext,'html5lib')
@@ -232,7 +234,10 @@ def get_themes(source_text):
 	
 	if len(source_text)>1:
 		pre_theme = re.findall('<img alt=\".*\" src=\"',str(source_text[1]))
-		theme = str(pre_theme[0]).replace('<img alt=\"','').replace('\" src=\"','')
+		if len(pre_theme)>0: 
+			theme = str(pre_theme[0]).replace('<img alt=\"','').replace('\" src=\"','')
+		else:
+			theme = 'NA'
 	else:
 		theme = 'NA'
 
@@ -349,13 +354,13 @@ if __name__ == '__main__':
 	# parser.add_argument('-y1', '--year1', help='Anio, a cuatro digitos, hasta el que queremos buscar', required=True)
 	parser.add_argument('-b', '--buscasi', help='Palabras que queremos buscar, entre comillas si son + de 1', required=True)
 	# parser.add_argument('-e', '--buscaexacta', help='Frase exacta que queremos buscar, entre comillas si son + de 1', required=True)
-	parser.add_argument('-p', '--pais', help='País del cual queremos noticias, en inglés y minúsuculas', required=True)
+# parser.add_argument('-p', '--pais', help='País del cual queremos noticias, en inglés y minúsuculas', required=True)
 
 
 	args = parser.parse_args()
 
 	busqueda_si = str(args.buscasi)
-	pais = str(args.pais)
+	# pais = str(args.pais)
 
 
 	# Constantes "cool behaviour"
@@ -380,13 +385,14 @@ if __name__ == '__main__':
 	themes_array = []
 
 	#Vamos a hacer queries hasta que ya no haya resultados	
-	print "Búsqueda: "+busqueda_si+" COUNTRY "+pais
+	print "Búsqueda: "+busqueda_si#" COUNTRY "+pais
 
 	num = 1
-	query = make_query(busqueda_si,pais,num)
+	query = make_query(busqueda_si,num)
 	print query+"\n"
 	
-	primeralinea = str(busqueda_si+" COUNTRY "+pais+"|"+query+"\n")
+	# primeralinea = str(busqueda_si+" COUNTRY "+pais+"|"+query+"\n")
+	primeralinea = str(busqueda_si+"|"+query+"\n")
 	write_1st_line(archivo,primeralinea)
 
 
@@ -433,7 +439,7 @@ if __name__ == '__main__':
 		#Buscamos más noticias
 		num = num + 1
 		print "Procesando hoja %s." % str(num)
-		query = make_query(busqueda_si,pais,num)
+		query = make_query(busqueda_si,num)
 		soup = get_page(query,br)
 		news_list = get_all_news(soup)
 
