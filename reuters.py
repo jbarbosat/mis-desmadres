@@ -1,9 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 21-ene-2014
-
-# OJO: Necesito ver si esto jala 
+# 22-ene-2014
 
 # Dada una búsqueda, se recuperan conjuntos de noticias de Alertnet, by Reuters, de más reciente a más viejo
 # Hay 12 noticias que tienen todos los atributos en cada búsqueda y otras noticias que son related items
@@ -13,11 +11,11 @@
 # run reuters.py -b "climate change science"
 
 # Notitas:
-# - Aquí no se puede buscar por mes; no hay filtros de fecha. 
-# - Tampoco parece haber chance de hacer búsquedas exactas ni de filtrar cosas que no queremos
-# - Hay noticias y reportes de las organizaciones. Se puede filtrar x organización. So far no estoy filtrando x organización.
+# - Aquí no hay filtros de fecha ni se puede hacer búsquedas exactas o exluir términos.
+# - Hay noticias y reportes de las organizaciones. Se puede filtrar x organización. So far no lo estoy haciendo
+# porque las búsquedas regresarían muy pocos resultados
 # - Queremos sólo recuperar artículos? So far eso estoy haciendo
-# - A diferencia de google news, acá no se repiten noticias
+# - A diferencia de google news, acá no se repiten noticias.
 # - Aquí no hay abstract
 # - Qué es mejor: Escribir poquito y echarlo a archivo? O concatenar lo de toda la búsqueda y mandarlo?
 # so far tengo concatenado lo de toda la búsqueda pero no hay bronca con cambiarlo
@@ -36,13 +34,13 @@
 # https://bugs.launchpad.net/beautifulsoup/+bug/1026381
 
 #IN: 
-# - Un archivo separado por pipes con mes0, mes1, dia0, dia1, year0, year1, busqueda_si, busqueda_no, busqueda_exacta
-# aunque ahorita lo estoy metiendo a mano
+# - Términos a buscar como parámetros de entrada del programito:
+# run reuters.py -b "climate change science"
 
 #OUT: 
 # Timestamp.out; un archivo separado por pipes. 
-# En la primera línea hay: fecha0|fecha1|busqueda|hits|link de la query a google news
-# Para cada noticia, fecha | url | periódico | titulo | country
+# En la primera línea hay: palabras de la búsqueda|link a la primera hoja de resultados
+# Para cada noticia, fecha y hora de publicación | url | autor/fuente | tema
 
 ##########################################################################################
 
@@ -121,28 +119,28 @@ def make_query(busqueda_si,num):
 
 
 def get_page(query,br):
-# # Y si se muere el internet? Y si google se pone punk?
-# 	print "Recuperando html de la página."
-# 	intentos = 0
-# 	max_intentos = 3
-# 	while intentos<max_intentos:
-# 		try:
-# 			htmltext = br.open(query).read()
-# 			print "Conexión exitosa."
-# 			break
-# 		except Exception as e:
-# 				intentos = intentos + 1
-# 				n = randint(MIN_SLEEPTIME, MAX_SLEEPTIME) # Número aleatorio entre MIN_SLEEPTIME y MAX_SLEEPTIME
-# 				print "Falló la conexión, intentando de nuevo en %s segs." % str(n)
-# 				sleep(n)
+# Y si se muere el internet? Y si google se pone punk?
+	print "Recuperando html de la página."
+	intentos = 0
+	max_intentos = 3
+	while intentos<max_intentos:
+		try:
+			htmltext = br.open(query).read()
+			print "Conexión exitosa."
+			break
+		except Exception as e:
+				intentos = intentos + 1
+				n = randint(MIN_SLEEPTIME, MAX_SLEEPTIME) # Número aleatorio entre MIN_SLEEPTIME y MAX_SLEEPTIME
+				print "Falló la conexión, intentando de nuevo en %s segs." % str(n)
+				sleep(n)
 				
-# 	if intentos == max_intentos:
-# 		htmltext = ""
-# 		print "Número de intentos excedido, omitiendo la búsqueda: " + query
-# 		f = codecs.open ('fails.err', 'a','utf-8')
-# 		f.write("".join(query).decode('utf-8'))
-# 		f.write("\n")
-# 		f.close()
+	if intentos == max_intentos:
+		htmltext = ""
+		print "Número de intentos excedido, omitiendo la búsqueda: " + query
+		f = codecs.open ('fails.err', 'a','utf-8')
+		f.write("".join(query).decode('utf-8'))
+		f.write("\n")
+		f.close()
 
 	# Guardé un ejemplo del html que lee, para hacer pruebas
 
@@ -150,9 +148,9 @@ def get_page(query,br):
 	# f.write(htmltext)
 	# f.close()
 
-	f = open('texto.html')
-	htmltext = f.read()
-	f.close()
+	# f = open('texto.html')
+	# htmltext = f.read()
+	# f.close()
 	
 	#ojo! hay un bug en el parser que usa default! sin 'html.parser', muere
 	soup = BeautifulSoup(htmltext,'html5lib')
