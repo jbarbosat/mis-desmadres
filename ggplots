@@ -1,4 +1,3 @@
-
 #Titanic de Adolfo: Histogramas de la variable pclass dividido por boat
 
 sobrevivientes <- titanic3[titanic3$survived=="Yes", ]
@@ -22,6 +21,8 @@ for(i in nums.pregs){
   datosaux<-melt(datos4[,c(1,i)],id.vars="country")
   datosaux$value<-factor(datosaux$value,levels=niveles[[j]])
   ggobj=ggplot(datosaux, aes(country, fill=value)) + geom_bar(position = "dodge") + labs(title = preguntas[i,1])
+  + theme(axis.text.x = element_text(colour = 'red', angle = 45, size = 10, hjust = -3, vjust = 7, face = 'italic'))
+  # https://github.com/hadley/ggplot2/wiki/Axis-Attributes
   print(ggobj)
   ggsave(sprintf("%s.pdf", preguntas[i,1]))
   j<-j+1;
