@@ -1,3 +1,6 @@
+#!/usr/bin/bash
+# coding:utf-8
+
 # 23.nov.2013
 # Bash para Convertir la música m4a de diego a mp3 y ponerla en carpetas Artista/Album/canciones
 # Tal que cuando se importen a itunes se conserven estas propiedades. Notamos que si se trataba
