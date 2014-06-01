@@ -6,15 +6,13 @@
 # Eventualmente lo pondré en un chron para que corra solo.
 
 # Para correrlo, en ipython:
-
-# %load_ext autoreload
-# %autoreload 1
-# %aimport telcel_scrapper
-# Para mi número
-# run telcel.py -i parametros.yaml -o ../datos.out
-# Para el de Diego:
-# run telcel.py -i parametrosD.yaml -o ../datosD.out
-
+"""
+%load_ext autoreload
+%autoreload 1
+%aimport telcel_scrapper
+#Para mi número
+run telcel.py -i parametros.yaml
+"""
 # Esto para que se vuelva a cargar la clase telcel_scrapper.py
 # De otra manera, hay que borrar un archivo .pyc que se
 # genera y cerrar la sesión de python
@@ -30,6 +28,10 @@
 # Quité \r malditos del texto recuperado antes de escribirlo en output.
 # Además, agregué parámetros para poder monitorear más de un número
 
+# 01-junio-2014
+# Agregué todos los parámetros en un solo file yaml para correr todo
+# una sola vez y otener datos de los números de todo el mundo.
+# Los diferentes archivos .out son parte de los parámetros del yaml.
 
 from datetime import datetime
 
@@ -51,7 +53,7 @@ class TelcelScrapper():
 
     # Constantes "cool behaviour"
     MIN_NAPTIME = 20
-    MAX_NAPTIME = 30 # Máximo tiempo de dormir
+    MAX_NAPTIME = 40 # Máximo tiempo de dormir
 
 
     def __init__(self, logger, session, archivo):
@@ -126,13 +128,14 @@ class TelcelScrapper():
         renglones = soup2.findAll('tr')
         #print '-----------'
         if len(renglones)>1:
-            print renglones
+            # print renglones
             amigo = renglones[1].findAll('strong')[0]
             if len(renglones)>2:    
                 regalo = renglones[2].findAll('strong')[0]
             else:
                 regalo = 0
-            return  'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+"\n"
+            print 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+"\n"
+            return 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+"\n"
         else:
             return ''
 

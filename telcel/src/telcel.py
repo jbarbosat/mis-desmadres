@@ -6,15 +6,15 @@
 
 # Para correrlo, en ipython:
 
-# %load_ext autoreload
-# %autoreload 1
-# %aimport telcel_scrapper
-# Para mi número
-# run telcel.py -i parametros.yaml -o ../datos.out
-# Para el de Diego:
-# run telcel.py -i parametrosD.yaml -o ../datosD.out
+"""
+%load_ext autoreload
+%autoreload 1
+%aimport telcel_scrapper
+# Puse todos los parámetros en un solo archivo
+run telcel.py -i parametros.yaml
+"""
 
-# Esto para que se vuelva a cargar la clase telcel_scrapper.py
+# Esto último para que se vuelva a cargar la clase telcel_scrapper.py
 # De otra manera, hay que borrar un archivo .pyc que se
 # genera y cerrar la sesión de python
 
@@ -28,6 +28,11 @@
 # 05-mayo-2014
 # Quité \r malditos del texto recuperado antes de escribirlo en output.
 # Además, agregué parámetros para poder monitorear más de un número
+
+# 01-junio-2014
+# Agregué todos los parámetros en un solo file yaml para correr todo
+# una sola vez y otener datos de los números de todo el mundo.
+# Los diferentes archivos .out son parte de los parámetros del yaml.
 
 import sys
 import os
@@ -60,7 +65,7 @@ from telcel_scrapper import TelcelScrapper
 
 def get_parameters(archivo):
     yaml_file = open(archivo)
-    params = yaml.load(yaml_file)
+    params = yaml.safe_load(yaml_file)
     yaml_file.close()
 
     return params
@@ -114,29 +119,29 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='')
 
-    parser.add_argument('-i', '--input', help='Mes, a dos dígitos, desde el que queremos buscar', required=True)
-    parser.add_argument('-o', '--output', help='Mes, a dos dígitos, hasta el que queremos buscar', required=True)
+    parser.add_argument('-i', '--input', help='Path al archivo .yaml con los parámetros', required=True)
   
     args = parser.parse_args()
 
     parametros = str(args.input)
-    salida = str(args.output)
 
     # Para guardar logs
     logger = make_logger()
 
     # Abrimos el yaml
-    telcel = get_parameters(parametros)
+    todo_params = get_parameters(parametros)
 
-    logger.info("Obteniendo saldo para el número %s" % (telcel["numero"]))
-    
-    # Necesitamos loggearnos una vez a la página principal y luego, con las cookies, 
-    # ya podemos tener acceso a la info de la cuenta
-    cosa = login(telcel["numero"], telcel["password"])
+    # Hay más de un set de parámetros en el archivo...
+    for linea in todo_params:   
+        logger.info("Obteniendo saldo para el número %s" % (linea["numero"]))
+        
+        # Necesitamos loggearnos una vez a la página principal y luego, con las cookies, 
+        # ya podemos tener acceso a la info de la cuenta
+        cosa = login(linea["numero"], linea["password"])
 
-    t = TelcelScrapper(logger=logger, session=cosa, archivo=str(os.path.relpath(salida)))
-    t.obten_saldo()
+        t = TelcelScrapper(logger=logger, session=cosa, archivo=str(os.path.relpath(linea["out"])))
+        t.obten_saldo()
 
-    logger.info("Concluido a las %s" % str(datetime.now()))
+        logger.info("Concluido a las %s" % str(datetime.now()))
 
 
