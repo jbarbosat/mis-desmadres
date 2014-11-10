@@ -93,7 +93,8 @@ class TelcelScrapper():
         #f = codecs.open ('texto.html', 'w','utf-8')
         #f.write("".join(texto).decode('utf-8'))
         #f.close()
-        self.logger.debug(soup)
+        
+        # self.logger.debug(soup)
 
         return soup
 
@@ -129,13 +130,15 @@ class TelcelScrapper():
         #print '-----------'
         if len(renglones)>1:
             # print renglones
+            vigencia = renglones[1].findAll('td')[1]
             amigo = renglones[1].findAll('strong')[0]
             if len(renglones)>2:    
                 regalo = renglones[2].findAll('strong')[0]
             else:
                 regalo = 0
-            print 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+"\n"
-            return 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+"\n"
+            print 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+ ', vigencia: '+str(vigencia).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','').replace('<td>','').replace('</td>','')+"\n"
+            return 'fecha: '+str(datetime.now())+ ', amigo: '+str(amigo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+', regalo: '+str(regalo).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','')+ ', vigencia: '+str(vigencia).replace(' ','').replace('\n','').replace('\r','').replace('<strong>','').replace('</strong>','').replace('<td>','').replace('</td>','')+"\n"
+
         else:
             return ''
 
