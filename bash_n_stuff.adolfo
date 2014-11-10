@@ -68,3 +68,17 @@ do
   date
 done
 ```
+
+
+
+Unos cosos con grep y AWK medio marranos
+
+Cuántas comillas dobles hay por línea?
+# Guardamos en el archivo conteo el numero de ocurrencias y el numero de linea...
+grep -o -n '"' other_vhosts_access.log.1 | cut -d : -f 1 | uniq -c > conteo
+
+# Traemos de ese archivo las lineas que tienen 7 ocurrencias...
+grep '7 ' conteo | sed 's/7 //' | sed 's/ //g' > lineas
+
+# Para iterar por linea en AWK: 
+# cat lineas | awk '{ l[lines++] = $0 } END {for (i = 0; i < lines; ++i) print l[i]}'
