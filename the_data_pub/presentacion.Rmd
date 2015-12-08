@@ -1,0 +1,37 @@
+The Data Pub: Accidentes viales en el D.F.
+========================================================
+author: Jessica Barbosa 
+date: 15-diciembre-2015
+
+First Slide
+========================================================
+
+http://www.inegi.org.mx/est/contenidos/proyectos/accesomicrodatos/registros/economicas/accidentes/
+http://www3.inegi.org.mx/sistemas/microdatos/descargas.aspx?sr=microdatos_archivos/atus/2014/atus2014.zip&ht=02
+http://www3.inegi.org.mx/sistemas/microdatos/descargas.aspx?sr=microdatos_archivos/atus/doc/fd_bd_atus_2014.pdf&ht=01
+
+For more details on authoring R presentations click the
+**Help** button on the toolbar.
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Slide With Code
+========================================================
+
+Tenemos el DBF en data
+
+```{r}
+setwd("~/mis-desmadres/the_data_pub")
+library("foreign")
+datos<-read.dbf("data/atus14.dbf")
+head(datos)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
