@@ -127,14 +127,66 @@ qplot(datos_df$MPIO,main="Número de accidentes por Delegación")+
   theme(axis.text.x=element_text(angle=90))
 ```
 
-Datos del D.F.
+Tipos de accidentes
 =======================================================
-```{r}
+```{r,fig.align='center'}
 par(mfrow=c(4,4))
 for(i in c(1:16)){
   hist(datos_df[datos_df$MPIO == i,"TIPACCID"], main=delegaciones[i], xlab="Tipo de accidente")
 }
 ```
+
+
+Tipos de accidentes
+=======================================================
+_TIPACCID_ es una variable categórica:
+
+```
+  Clave 1.- Colisión con vehículo automotor
+  Clave 2.- Colisión con peatón (atropellamiento)
+  Clave 3.- Colisión con animal
+  Clave 4.- Colisión con objeto fijo
+  Clave 5.- Volcadura
+  Clave 6.- Caída de pasajero
+  Clave 7.- Salida del camino
+  Clave 8.- Incendio
+  Clave 9.- Colisión con ferrocarril
+  Clave 10.- Colisión con motocicleta
+  Clave 11.- Colisión con ciclista
+  Clave 12.- Otro
+```
+
+
+Tipos de accidentes
+=======================================================
+Convertimos a factores (quitando el 9 porque no hay)
+```{r,fig.align='center'}
+table(datos_df$TIPACCID)
+datos_df$tipoacc<-factor(datos_df$TIPACCID,labels=c("Auto","Peatón","Animal","Cosa","Volc"
+                                                    ,"Caída","Camino","Fuego","Moto"
+                                                    ,"Bici","Otro"))
+table(datos_df$tipoacc)
+```
+
+
+Tipos de accidentes
+=======================================================
+```{r,fig.align='center'}
+par(mfrow=c(4,4))
+for(i in c(1:16)){
+  plot(datos_df[datos_df$MPIO == i,"tipoacc"], main=delegaciones[i], xlab="Tipo de accidente")
+}
+```
+
+Tipos de accidentes
+=======================================================
+```{r,fig.align='center'}
+par(mfrow=c(4,4))
+for(i in c(1:16)){
+  plot(datos_df[datos_df$MPIO == i,"tipoacc"], main=delegaciones[i], xlab="Tipo de accidente")
+}
+```
+
 
 Algunas conclusiones
 ========================================================
