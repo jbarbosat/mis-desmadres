@@ -1,49 +1,165 @@
-The Data Pub: Accidentes viales en el D.F.
+Accidentes viales en el D.F.
 ========================================================
 author: Jessica Barbosa 
 date: 15-diciembre-2015
+css: presentacion.css
 
-First Slide
+Descarga de datos
 ========================================================
 
-For more details on authoring R presentations click the
-**Help** button on the toolbar.
+- [Sitio de INEGI](http://www.inegi.org.mx/est/contenidos/proyectos/accesomicrodatos/registros/economicas/accidentes/)
+- Microdatos - descarga.
+- Seleccionamos año 2014.
+- Descarga de .zip con datos y .pdf con metadatos en la subcarpeta __data__.
+  - Del .zip tomamos el archivo DBF.
+  - Del .pdf tomamos qué significa cada campo.
+  
+```{r,echo=FALSE}
+setwd("/home/jess/mis-desmadres/the_data_pub/")
+```
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+Carga de datos en R
+========================================================
+Leemos el archivo DBF con ayuda de la librería _foreign_:
+```{r}
+#install.packages("foreign")
+library("foreign")
+#setwd("/home/yo/carpeta_del_proyecto")
+datos<-read.dbf("data/atus14.dbf")
+head(datos,1)
+```
 
-Slide With Code
+Exploración rápida
 ========================================================
 
 ```{r}
-summary(cars)
+nrow(datos)
+ncol(datos)
+names(datos)
 ```
 
-Slide With Plot
+
+Exploración rápida: Tiempo, lugar, tipo de accidente
 ========================================================
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+summary(datos[,c(1:11,25)])
 ```
 
+
+Exploración rápida: Vehículos involucrados
+========================================================
+
+```{r}
+summary(datos[,12:24])
+``` 
+
+
+Exploración rápida: Muertos y heridos
+========================================================
+```{r}
+summary(datos[,31:42])
+``` 
+
+
+Exploración rápida: Gráficas
+========================================================
+```{r}
+par(mfrow=c(3,4))
+for(i in c(31:42)){
+  hist(datos[,i],main=names(datos)[i])
+}
+``` 
+
+
+Datos x Entidad
+=======================================================
+```{r}
+hist(datos$EDO)
+```
+
+Datos x Entidad
+=======================================================
+```{r,fig.width=30,fig.align='center',fig.height=15}
+nombres_estados<-c("Ags","BC","BCS","Cam","Coah","Col","Chis","Chih","DF","Dur","Gto","Gro"
+                   ,"Hid","Jal","Mex","Mich","Mor","Nay","NL","Oax","Pue","Qro","QRoo","SLP"
+                   ,"Sin","Son","Tab","Tmps","Tlax","Ver","Yuc","Zac")
+hist(datos$EDO,labels=nombres_estados,main="Número de accidentes por Entidad")
+```
+
+
+Datos x Entidad
+=======================================================
+```{r,fig.width=30,fig.align='center',fig.height=15}
+library("ggplot2")
+qplot(datos$EDO,main="Número de accidentes por Entidad")
+```
+
+
+Datos x Entidad
+=======================================================
+```{r,fig.width=30,fig.align='center',fig.height=15}
+library("ggplot2")
+qplot(datos$EDO,main="Número de accidentes por Entidad")+ 
+  scale_x_discrete(labels=c("",nombres_estados)) +
+  theme(axis.text.x=element_text(angle=90))
+```
+
+
+Datos del D.F.
+=======================================================
+```{r,fig.width=30,fig.align='center',fig.height=15}
+library("dplyr")
+datos_df<-filter(datos, EDO == 9)
+delegaciones<-c("AObr","Azcap","BJ","Coyo","Cuaj","Cuauh","GAM","Iztac","Iztap","MagC"
+                ,"Hid","MAlta","Tlah","Tlal","VCarr","Xoch")
+table(datos_df$MPIO)
+datos_df$MPIO<-datos_df$MPIO-1
+table(datos_df$MPIO)
+```
+
+
+Accidentes x delegación
+=======================================================
+```{r,fig.width=30,fig.align='center',fig.height=15}
+qplot(datos_df$MPIO,main="Número de accidentes por Delegación")+ 
+  scale_x_discrete(labels=c("",delegaciones),name="Delegación") +
+  theme(axis.text.x=element_text(angle=90))
+```
+
+Datos del D.F.
+=======================================================
+```{r}
+par(mfrow=c(4,4))
+for(i in c(1:16)){
+  hist(datos_df[datos_df$MPIO == i,"TIPACCID"], main=delegaciones[i], xlab="Tipo de accidente")
+}
+```
 
 Algunas conclusiones
 ========================================================
 
-- 
+- Limpieza y manipulación de datos: **dplyr**
+- Hartos datos:
+  - R se come la RAM (**ff**, **bigmemory**, **bigglm**, ...)
+  - R usa sólo procesador (**snow**,**foreach**,**pdb***) 
 
 
+Algunas meta-conclusiones
+========================================================
+
+- RStudio: GUI para R.
+  - Facilita ejecución de código en R (editor de texto, consola, gráficas,...)
+  - Rmarkdown: Facilita creación de PDFs
+  - Shiny: Aplicaciones web sencillas.
+- Complicado editar las opciones default si uno no sabe TEX, HTML, etc.
+- Mi opción usual:
+  - .Rmd -> .md -> .tex -> .pdf, el primero vía R, el segundo vía pandoc.
 
 Referencias
 ========================================================
 
 - [Microdatos de accidentes (INEGI)](http://www.inegi.org.mx/est/contenidos/proyectos/accesomicrodatos/registros/economicas/accidentes/)
+- [Esta presentación en github](https://github.com/jbarbosat/mis-desmadres/blob/master/the_data_pub/presentacion.Rpres)
+- [Resumen de herramientas de paralelización en R](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
 
-
-
-
-========================================================
-
-- Yo: pandorabob@gmail.com
-- Esta presentación: 
