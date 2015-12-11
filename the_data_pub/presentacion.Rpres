@@ -178,14 +178,58 @@ for(i in c(1:16)){
 }
 ```
 
-Tipos de accidentes
+Y un mapita
+=======================================================
+
+- Para poder mostrar un mapa necesitamos las coordenadas de los polígonos que conforman 
+cada estado, municipio, etc.
+- INEGI tiene esa información. Descargamos municipios [acá](http://mapserver.inegi.org.mx/MGN/mgm2014v6_2.zip)
+
+```
+$ cd data
+$ wget http://mapserver.inegi.org.mx/MGN/mgm2014v6_2.zip
+$ unzip mgm2014v6_2.zip -d shps_inegi
+$ ls shps_inegi
+mgm2013v6_2.dbf  mgm2013v6_2.prj  mgm2013v6_2.shp  mgm2013v6_2.shx
+```
+
+Y un mapita
+=======================================================
+
+```{r}
+#library(maps)
+#library(mapdata)
+library(maptools)  #for shapefiles
+#library(scales)  #for transparency
+munis <- readShapePoly("data/shps_inegi/mgm2013v6_2.shp")
+head(munis@data)
+munis_df<-munis[munis@data$CVE_ENT=="09",]
+```
+
+Y un mapita
+=======================================================
+```{r,,fig.align='center'}
+plot(munis_df) 
+```
+
+
+Y un mapita con tipos de accidentes
 =======================================================
 ```{r,fig.align='center'}
-par(mfrow=c(4,4))
-for(i in c(1:16)){
-  plot(datos_df[datos_df$MPIO == i,"tipoacc"], main=delegaciones[i], xlab="Tipo de accidente")
-}
+plot(munis_df,col="red") 
 ```
+
+Y un mapita con tipos de accidentes
+=======================================================
+- Podemos asociar el color de los municipios al número de accidentes
+que suceden para cada tipo.
+- Problema: la columna _tipoacc_ se ve así:
+```{r}
+print(datos_df[1:10,"tipoacc"])
+```
+- Es de tipo factor. Tenemos que transformarla a muchas indicadoras;
+una para cada tipo de accidente para que podamos obtener el número
+de incidentes de cada tipo por delegación.
 
 
 Algunas conclusiones
@@ -211,6 +255,7 @@ Algunas meta-conclusiones
 Referencias
 ========================================================
 
+- [Polígonos de México (INEGI)](http://www.inegi.org.mx/geo/contenidos/geoestadistica/m_g_0.aspx)
 - [Microdatos de accidentes (INEGI)](http://www.inegi.org.mx/est/contenidos/proyectos/accesomicrodatos/registros/economicas/accidentes/)
 - [Esta presentación en github](https://github.com/jbarbosat/mis-desmadres/blob/master/the_data_pub/presentacion.Rpres)
 - [Resumen de herramientas de paralelización en R](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
