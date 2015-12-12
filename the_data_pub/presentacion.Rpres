@@ -232,6 +232,14 @@ una para cada tipo de accidente para que podamos obtener el número
 de incidentes de cada tipo por delegación.
 
 
+Transformamos un factor
+=======================================================
+```{r}
+#install.packages("tidyr")
+library("tidyr")
+spread(datos_df, factor2, num)
+
+
 Algunas conclusiones
 ========================================================
 
