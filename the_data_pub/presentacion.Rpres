@@ -208,7 +208,7 @@ munis_df<-munis[munis@data$CVE_ENT=="09",]
 
 Y un mapita
 =======================================================
-```{r,,fig.align='center'}
+```{r,fig.align='center'}
 plot(munis_df) 
 ```
 
@@ -237,13 +237,92 @@ Transformamos un factor
 ```{r}
 #install.packages("tidyr")
 library("tidyr")
-spread(datos_df, factor2, num)
+datos_df$dummy<-1
+sumas_tipoacc<-datos_df %>%
+    select(EDO:DIASEMANA,tipoacc,dummy) %>%  
+     group_by(EDO,MES,ANIO,MPIO,HORA,MINUTOS,DIA,DIASEMANA,tipoacc) %>%
+     summarise(num_acc=sum(dummy))
+head(sumas_tipoacc)
+```
+
+
+Transformamos un factor
+=======================================================
+Totales por delegación:
+```{r}
+totales_tipoacc<-datos_df %>%
+    select(MPIO,tipoacc,dummy) %>%  
+     group_by(MPIO,tipoacc) %>%
+     summarise(num_acc=sum(dummy))
+totales_tipoacc$MPIO<-sprintf("%03d",(totales_tipoacc$MPIO+1))
+head(totales_tipoacc)
+```
+
+
+Pintamos el mapa según el factor
+=======================================================
+
+Necesitamos hacer comparables los mapas por tipo de accidente: misma escala de color.
+```{r}
+intervalos<-hist(totales_tipoacc$num_acc,breaks=20,plot=FALSE)$breaks
+print(intervalos)
+```
+
+Obtenemos los colores:
+
+```{r}
+#install.packages("RColorBrewer")
+library(RColorBrewer)
+pal <- colorRampPalette(brewer.pal(9, 'Reds'))(length(intervalos))
+print(pal)
+```
+
+
+Pintamos el mapa según el factor
+=======================================================
+Asignamos los colores:
+```{r}
+head(munis_df@data)
+totales_tipoacc$colores<-c()
+for(i in 1:length(pal))
+  totales_tipoacc$colores[totales_tipoacc$num_acc>=intervalos[i]]<-pal[i]
+```
+
+
+Pintamos el mapa según el factor
+=======================================================
+```{r,eval=FALSE}
+par(mfrow=c(2,5))
+for(i in c("Auto","Peatón","Animal","Cosa","Volc","Caída","Camino","Moto","Bici","Otro")){
+  accidente<-totales_tipoacc[totales_tipoacc$tipoacc==i,]
+  munis_df@data$num_acc<-c()
+  munis_df@data$tipoacc<-c()
+  munis_df@data$colores<-c()
+  munis_df@data<-merge(munis_df@data,accidente,by.x="CVE_MUN",by.y="MPIO")
+  plot(munis_df,col=munis_df@data$colores,main=i)
+}
+```
+
+
+Pintamos el mapa según el factor
+=======================================================
+```{r,fig.align='center',echo=FALSE}
+par(mfrow=c(2,5))
+for(i in c("Auto","Peatón","Animal","Cosa","Volc","Caída","Camino","Moto","Bici","Otro")){
+  accidente<-totales_tipoacc[totales_tipoacc$tipoacc==i,]
+  munis_df@data$num_acc<-c()
+  munis_df@data$tipoacc<-c()
+  munis_df@data$colores<-c()
+  munis_df@data<-merge(munis_df@data,accidente,by.x="CVE_MUN",by.y="MPIO")
+  plot(munis_df,col=munis_df@data$colores,main=i)
+}
+```
 
 
 Algunas conclusiones
 ========================================================
 
-- Limpieza y manipulación de datos: **dplyr**
+- Limpieza y manipulación de datos: **dplyr**, **tidyr**
 - Hartos datos:
   - R se come la RAM (**ff**, **bigmemory**, **bigglm**, ...)
   - R usa sólo procesador (**snow**,**foreach**,**pdb***) 
