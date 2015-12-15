@@ -306,7 +306,7 @@ for(i in c("Auto","Peatón","Animal","Cosa","Volc","Caída","Camino","Moto","Bic
 
 Pintamos el mapa según el factor
 =======================================================
-```{r,fig.align='center',echo=FALSE}
+```{r,fig.align='center',echo=FALSE,fig.width=30,fig.height=15}
 par(mfrow=c(2,5))
 for(i in c("Auto","Peatón","Animal","Cosa","Volc","Caída","Camino","Moto","Bici","Otro")){
   accidente<-totales_tipoacc[totales_tipoacc$tipoacc==i,]
@@ -314,10 +314,48 @@ for(i in c("Auto","Peatón","Animal","Cosa","Volc","Caída","Camino","Moto","Bic
   munis_df@data$tipoacc<-c()
   munis_df@data$colores<-c()
   munis_df@data<-merge(munis_df@data,accidente,by.x="CVE_MUN",by.y="MPIO")
-  plot(munis_df,col=munis_df@data$colores,main=i)
+  plot(munis_df,col=munis_df@data$colores,main=i,xaxs="i",yaxs="i",cex.main=7)
 }
 ```
 
+
+Serie de tiempo de accidentes de auto
+=======================================================
+```{r,fig.width=30,fig.height=15,fig.align='center'}
+datos_df_auto<-datos_df %>% filter(tipoacc=="Auto") %>%
+    select(ANIO,MES,DIA,DIASEMANA,MPIO,tipoacc,dummy)
+datos_df_auto$fecha<-as.Date(paste(datos_df_auto$ANIO,"-"
+                           ,sprintf("%02d",datos_df_auto$MES),"-"
+                           ,sprintf("%02d",datos_df_auto$DIA),sep=""))
+sumas_df_auto<-datos_df_auto %>% group_by(fecha) %>%
+  summarise(total=sum(dummy,na.rm=TRUE))
+ggplot(sumas_df_auto, aes(fecha, total)) + geom_line() + 
+  xlab("") + ylab("Número de accidentes de auto")
+```
+
+
+Serie de tiempo de accidentes de auto por mes
+=======================================================
+```{r,fig.width=30,fig.height=15,fig.align='center'}
+sumas_df_auto_mes<-datos_df_auto
+sumas_df_auto_mes<-datos_df_auto %>% group_by(DIA,MES) %>%
+  summarise(total=sum(dummy,na.rm=TRUE))
+meses<-factor(sumas_df_auto_mes$MES,labels=unique(months(datos_df_auto$fecha)))
+ggplot(sumas_df_auto_mes, aes(x=DIA, y=total, color=meses)) + geom_line(size=3) + 
+  xlab("") + ylab("Número de accidentes de auto por mes")
+```
+
+Serie de tiempo de accidentes de auto por dia de la semana
+=======================================================
+```{r,fig.align='center',fig.width=30,fig.height=15}
+datos_df_auto$numsemana<-as.numeric(format(datos_df_auto$fecha+3, "%U"))
+sumas_df_auto_semana<-datos_df_auto %>% group_by(numsemana,DIASEMANA) %>%
+  summarise(total=sum(dummy,na.rm=TRUE))
+semanas<-as.factor(sumas_df_auto_semana$numsemana)
+ggplot(sumas_df_auto_semana, aes(x=DIASEMANA, y=total,color=semanas)) + geom_line(size=3) + 
+  xlab("") + ylab("Número de accidentes de auto por día de la semana") +
+  theme(legend.position="none")
+```
 
 Algunas conclusiones
 ========================================================
