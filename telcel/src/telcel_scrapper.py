@@ -68,7 +68,8 @@ class TelcelScrapper():
         start_time = datetime.now()
         self.logger.info("Empezando scrappeo")
 
-        saldo_url = 'https://www.mitelcel.com/mitelcel/micuenta/saldo'
+        #saldo_url = 'https://www.mitelcel.com/mitelcel/micuenta/saldo'
+        saldo_url = 'https://www.mitelcel.com/mitelcel/saldo/detalle'
         cuadrito = self.get_div(saldo_url)
         
         #if len(cuadrito)>0:
@@ -117,7 +118,7 @@ class TelcelScrapper():
 
     def get_div(self,saldo_url):
         soup = self.make_soup(saldo_url)
-        cuadrito = soup.findAll('div',attrs={'class':'plan-box first'}) #sólo hay uno
+        cuadrito = soup.findAll('div',attrs={'id':'box-detalle-saldo-table'}) #sólo hay uno
         if len(cuadrito)!=0:
             return cuadrito[0]
         else:
