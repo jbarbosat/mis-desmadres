@@ -1,5 +1,11 @@
 Telcel
 =============
+
+05-abr-2016
+
+Hubo cambios a la página de telcel.
+
+
 06-dic-2013
 
 Código que obtiene de la página de mitelcel.com el saldo amigo y el de regalo. 
