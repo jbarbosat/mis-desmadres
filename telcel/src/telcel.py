@@ -139,7 +139,7 @@ if __name__ == '__main__':
         # ya podemos tener acceso a la info de la cuenta
         cosa = login(linea["numero"], linea["password"])
 
-        t = TelcelScrapper(logger=logger, session=cosa, archivo=str(os.path.relpath(linea["out"])))
+        t = TelcelScrapper(logger=logger, session=cosa, archivo=str(os.path.relpath(linea["out"])), numero=linea["numero"])
         t.obten_saldo()
 
         logger.info("Concluido a las %s" % str(datetime.now()))
