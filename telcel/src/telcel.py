@@ -34,6 +34,11 @@ run telcel.py -i parametros.yaml
 # una sola vez y otener datos de los números de todo el mundo.
 # Los diferentes archivos .out son parte de los parámetros del yaml.
 
+# 07-abril-2016
+# Muchos cambios porque se modificó la estructura del sitio. En este
+# script agregamos headers al login y agregamos un parámetro para 
+# formar un objeto Telcel_scrapper
+
 import sys
 import os
 from datetime import datetime

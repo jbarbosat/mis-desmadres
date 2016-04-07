@@ -33,6 +33,11 @@ run telcel.py -i parametros.yaml
 # una sola vez y otener datos de los números de todo el mundo.
 # Los diferentes archivos .out son parte de los parámetros del yaml.
 
+# 09-abril-2016
+# Mil cambios porque se modificó la estructura del sitio: los datos
+# se obtienen vía api, así que hay que parsear menos cosas: armamos
+# la petición y cachamos un json que parseamos y guardamos
+
 from datetime import datetime
 
 # Manejo de conexiones y parseo de HTML
@@ -104,10 +109,6 @@ class TelcelScrapper():
 
     # # ## Versión de prueba. Lee un html que se guarda descomentando líneas en el código productivo de get_data
     # def get_data(self, api_url): 
-
-    #     # curl 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084' -H 'Cookie: JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: es-ES,es;q=0.8,en;q=0.6' -H 'Content-Type: application/json' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.mitelcel.com/mitelcel/saldo/detalle' -H 'X-Requested-With: XMLHttpRequest' --compressed  
-        
-    #     # api_url = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084'
 
     #     #response = self.session.open(api_url)
     #     #texto = response.read()
