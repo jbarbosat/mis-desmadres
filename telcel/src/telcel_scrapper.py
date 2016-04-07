@@ -51,11 +51,6 @@ import re
 
 class TelcelScrapper():
 
-    # Constantes "cool behaviour"
-    MIN_NAPTIME = 20
-    MAX_NAPTIME = 40 # Máximo tiempo de dormir
-
-
     def __init__(self, logger, session, archivo):
         self.logger = logger
         self.session = session
@@ -90,10 +85,6 @@ class TelcelScrapper():
 
 
     def make_soup(self, url): 
-        #n = randint(self.MIN_NAPTIME, self.MAX_NAPTIME) # Número aleatorio entre MIN y MAX_NAPTIME
-        #self.logger.debug("Dormiré %s segundos..." % str(n))
-        #sleep(n)
-        #self.logger.debug("OK, continuemos")
 
         # curl 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084' -H 'Cookie: JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: es-ES,es;q=0.8,en;q=0.6' -H 'Content-Type: application/json' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.mitelcel.com/mitelcel/saldo/detalle' -H 'X-Requested-With: XMLHttpRequest' --compressed  
         
