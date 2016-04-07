@@ -97,7 +97,7 @@ def make_logger():
 def login(numero, password):
     # http://stackoverflow.com/questions/2910221/how-can-i-login-to-a-website-with-python
     url = 'https://www.mitelcel.com/mitelcel/login/auth'
-    values = {'j_username' : numero, 'j_password' : password}
+    values = {'j_username' : numero, 'j_password' : password, 'isTablet' : 'false', 'goto' : 'opcional'}
 
     data = urllib.urlencode(values)
     cookies = cookielib.CookieJar()

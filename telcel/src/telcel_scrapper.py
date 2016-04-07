@@ -68,39 +68,67 @@ class TelcelScrapper():
         start_time = datetime.now()
         self.logger.info("Empezando scrappeo")
 
-        #saldo_url = 'https://www.mitelcel.com/mitelcel/micuenta/saldo'
+        # #saldo_url = 'https://www.mitelcel.com/mitelcel/micuenta/saldo'
+        # welcome_url = 'https://www.mitelcel.com/mitelcel/welcome'
+        # response = self.session.open(welcome_url)
+
         saldo_url = 'https://www.mitelcel.com/mitelcel/saldo/detalle'
-        cuadrito = self.get_div(saldo_url)
-        
+        # Hay que dar click en el coso que pide saldo                   
+        cuadrito = self.make_soup(saldo_url)
+        self.logger.debug("---------HOLA---------")
+        self.logger.debug(cuadrito)
+
         #if len(cuadrito)>0:
-        saldo = self.get_saldo(str(cuadrito))
-        self.escribe_archivo(saldo)
-        if len(saldo)!=0:
-            self.logger.debug("Info guardada")
-            self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
-        else:
-           self.logger.debug("No se guardó info. No se conectó bien.")
-           self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
+        # saldo = self.get_saldo(str(cuadrito))
+        # self.escribe_archivo(saldo)
+        # if len(saldo)!=0:
+        #     self.logger.debug("Info guardada")
+        #     self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
+        # else:
+        #    self.logger.debug("No se guardó info. No se conectó bien.")
+        #    self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
 
 
     def make_soup(self, url): 
-        n = randint(self.MIN_NAPTIME, self.MAX_NAPTIME) # Número aleatorio entre MIN y MAX_NAPTIME
-        self.logger.debug("Dormiré %s segundos..." % str(n))
-        sleep(n)
-        self.logger.debug("OK, continuemos")
-        response = self.session.open(url)
-        texto = response.read()
-        soup = BeautifulSoup(texto)
-        #f = codecs.open ('texto.html', 'w','utf-8')
-        #f.write("".join(texto).decode('utf-8'))
-        #f.close()
+        #n = randint(self.MIN_NAPTIME, self.MAX_NAPTIME) # Número aleatorio entre MIN y MAX_NAPTIME
+        #self.logger.debug("Dormiré %s segundos..." % str(n))
+        #sleep(n)
+        #self.logger.debug("OK, continuemos")
+
+        # curl 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084' -H 'Cookie: JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: es-ES,es;q=0.8,en;q=0.6' -H 'Content-Type: application/json' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.mitelcel.com/mitelcel/saldo/detalle' -H 'X-Requested-With: XMLHttpRequest' --compressed  
         
-        # self.logger.debug(soup)
+        # url = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084'
+        # values = {'Cookie' : 'JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1'}
+        # data = urllib.urlencode(values)
+        #     cookies = cookielib.CookieJar()
 
-        return soup
+        # opener = urllib2.build_opener(
+        #     urllib2.HTTPRedirectHandler(),
+        #     urllib2.HTTPHandler(debuglevel=0),
+        #     urllib2.HTTPSHandler(debuglevel=0),
+        #     urllib2.HTTPCookieProcessor(cookies))
 
+        # cosa = opener.open(url,data)
+        # #    
+
+        #self.logger.debug(self.session.cookie)
+
+        response = self.session.open('https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084')
+        texto = response.read()
+
+        # Para debuggeo:
+        f = codecs.open ('texto.html', 'w','utf-8')
+        f.write("".join(texto).decode('utf-8'))
+        f.close()
+        self.logger.debug(texto)
+
+        self.session.open('https://www.mitelcel.com/mitelcel/logout')
+
+        return texto
+
+
+    # ## Versión de prueba. Lee un html que se guarda descomentando líneas en el código productivo de make_soup
     # def make_soup(self, url):
-    #     # Versión de prueba. Lee un html que tenemos guardado.
     #     n = randint(self.MIN_NAPTIME, self.MAX_NAPTIME) # Número aleatorio entre MIN y MAX_NAPTIME
     #     self.logger.debug("Dormiré %s segundos..." % str(n))
     #     #sleep(n)
@@ -111,7 +139,7 @@ class TelcelScrapper():
     #     texto = f.read()
     #     f.close()
     #     soup = BeautifulSoup(texto)
-    #     self.logger.debug(soup)
+    #     # self.logger.debug(soup)
 
     #     return soup
 
@@ -119,6 +147,7 @@ class TelcelScrapper():
     def get_div(self,saldo_url):
         soup = self.make_soup(saldo_url)
         cuadrito = soup.findAll('div',attrs={'id':'box-detalle-saldo-table'}) #sólo hay uno
+        self.logger.debug(cuadrito)
         if len(cuadrito)!=0:
             return cuadrito[0]
         else:
