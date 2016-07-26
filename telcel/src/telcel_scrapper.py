@@ -76,6 +76,7 @@ class TelcelScrapper():
         saldo = ''
         if len(json_raw)>0:
             saldo = self.parse_saldo(json_raw)
+
             self.logger.debug(saldo)
             self.escribe_archivo(saldo)
             if len(saldo)!=0:
@@ -90,6 +91,9 @@ class TelcelScrapper():
 
         # curl 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084' -H 'Cookie: JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: es-ES,es;q=0.8,en;q=0.6' -H 'Content-Type: application/json' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.mitelcel.com/mitelcel/saldo/detalle' -H 'X-Requested-With: XMLHttpRequest' --compressed  
         
+        # {"response":{"data":{"saldoAmigo":283.67,"saldoMix":null,"vigencia":"29/07/2016","saldos":[{"descripcion":"Saldo Amigo","vigencia":"29/07/2016","cantidad":"$283.67"}],"fechaConsulta":"06.53 hrs. del 26/07/2016","fechaLimite":null,"insuficiente":false,"expirado":false},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}%                                               
+
+
         # api_url = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084'
 
         response = self.session.open(api_url)
@@ -129,11 +133,26 @@ class TelcelScrapper():
 
     def parse_saldo(self, datos_raw):
         if len(datos_raw)>1:
+
+            # self.logger.debug(datos_raw)
+            #  {"response":{"data":{"saldoAmigo":283.67,"saldoMix":null,"vigencia":"29/07/2016","saldos":[{"descripcion":"Saldo Amigo","vigencia":"29/07/2016","cantidad":"$283.67"}],"fechaConsulta":"06.58 hrs. del 26/07/2016","fechaLimite":null,"insuficiente":false,"expirado":false},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
+
             data = json.loads(datos_raw)['response']['data']['saldos']
-            return 'fecha: '+str(datetime.now()) +', ' + \
-                str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
-                ', ' + str(data[1]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[1]['cantidad']).replace('$','') + \
-                ', ' +'vigencia: ' + str(data[0]['vigencia']) + '\n'
+            # self.logger.debug(data)
+            # [{u'descripcion': u'Saldo Amigo', u'vigencia': u'29/07/2016', u'cantidad': u'$283.67'}]
+            
+            # Si no hay saldo de regalo, truena.
+            if len(data)>1:
+                return 'fecha: '+str(datetime.now()) +', ' + \
+                    str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
+                    ', ' + str(data[1]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[1]['cantidad']).replace('$','') + \
+                    ', ' +'vigencia: ' + str(data[0]['vigencia']) 
+            else:
+                return 'fecha: '+str(datetime.now()) +', ' + \
+                    str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
+                    ', regalo: 0.00' + \
+                    ', ' +'vigencia: ' + str(data[0]['vigencia'])
+
         else:
             return ''
 
