@@ -70,24 +70,45 @@ class TelcelScrapper():
 
         saldo_api = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/' + str(self.numero)
         # Hay que dar click en el coso que pide saldo                   
-        json_raw = self.get_data(saldo_api)
+        json_raw = self.get_data(saldo_api,0)
         #self.logger.debug(json_raw)
 
         saldo = ''
         if len(json_raw)>0:
-            saldo = self.parse_saldo(json_raw)
+            saldo = self.parse_saldo(json_raw,'normal')
 
             self.logger.debug(saldo)
-            self.escribe_archivo(saldo)
+            #self.escribe_archivo(saldo)
             if len(saldo)!=0:
-                self.logger.debug("Info guardada")
+                self.logger.debug("Info de saldo guardada")
                 self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
             else:
                self.logger.debug("No se guardó info. No se conectó bien.")
                self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
 
 
-    def get_data(self, api_url): 
+        internet_api = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/internet/consumo/' + str(self.numero)
+        json_raw = self.get_data(internet_api,1)
+        #self.logger.debug(json_raw)
+
+        internet = ''
+        if len(json_raw)>0:
+            internet = self.parse_saldo(json_raw,'internet')
+
+            self.logger.debug(internet)
+            #self.escribe_archivo(internet)
+            if len(internet)!=0:
+                self.logger.debug("Info de megas guardada")
+                self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
+            else:
+               self.logger.debug("No se guardó info. No se conectó bien.")
+               self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
+
+        self.escribe_archivo(saldo + ', ' + internet)
+
+
+
+    def get_data(self, api_url,logout): 
 
         # curl 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084' -H 'Cookie: JSESSIONID=405F6A8EAE3F5E001B3999B50778AA2B.mt-as3-site-1' -H 'Accept-Encoding: gzip, deflate, sdch' -H 'Accept-Language: es-ES,es;q=0.8,en;q=0.6' -H 'Content-Type: application/json' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.mitelcel.com/mitelcel/saldo/detalle' -H 'X-Requested-With: XMLHttpRequest' --compressed  
         
@@ -96,6 +117,39 @@ class TelcelScrapper():
 
         # api_url = 'https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/saldo/5522161084'
 
+#Request URL:https://www.mitelcel.com/mitelcel/mitelcel-api-web/api/prepago/internet/consumo/5522161084?_=1471897845424
+#         # Internet:
+#         {
+# response: {
+# data: [
+# {
+# totalContratado: 350,
+# totalConsumido: 0,
+# totalDisponible: 398.16,
+# porcentajeConsumo: 0,
+# porcentajeConsumoGrafica: 0,
+# fechaExpiracion: "16/09/2016",
+# horaConsulta: "18:31:52",
+# productName: "Paquete Sin Límite 150",
+# roamingFlag: 0,
+# paqueteExpiradoAgotado: false,
+# clave: null,
+# whatsapp: false,
+# redSocial: false,
+# idAnchor: "paqInternet1",
+# amigoSinLimite: true
+# }
+# ],
+# message: {
+# titulo: "Éxito",
+# descripcion: "Operación exitosa",
+# descripcionSistema: null,
+# categoria: "TXT",
+# causer: null,
+# status: null
+# }
+# }
+# }
         response = self.session.open(api_url)
         texto = response.read()
 
@@ -106,7 +160,8 @@ class TelcelScrapper():
         #self.logger.debug(texto)
 
         # Hay que hacer logout
-        self.session.open('https://www.mitelcel.com/mitelcel/logout')
+        if logout == 1:
+            self.session.open('https://www.mitelcel.com/mitelcel/logout')
 
         return texto
 
@@ -131,28 +186,44 @@ class TelcelScrapper():
 
     #     return texto
 
-    def parse_saldo(self, datos_raw):
+    def parse_saldo(self, datos_raw,tipo):
         if len(datos_raw)>1:
+            if tipo == 'normal':
+                # self.logger.debug(datos_raw)
+                #  {"response":{"data":{"saldoAmigo":283.67,"saldoMix":null,"vigencia":"29/07/2016","saldos":[{"descripcion":"Saldo Amigo","vigencia":"29/07/2016","cantidad":"$283.67"}],"fechaConsulta":"06.58 hrs. del 26/07/2016","fechaLimite":null,"insuficiente":false,"expirado":false},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
 
-            # self.logger.debug(datos_raw)
-            #  {"response":{"data":{"saldoAmigo":283.67,"saldoMix":null,"vigencia":"29/07/2016","saldos":[{"descripcion":"Saldo Amigo","vigencia":"29/07/2016","cantidad":"$283.67"}],"fechaConsulta":"06.58 hrs. del 26/07/2016","fechaLimite":null,"insuficiente":false,"expirado":false},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
+                data = json.loads(datos_raw)['response']['data']['saldos']
+                # self.logger.debug(data)
+                # [{u'descripcion': u'Saldo Amigo', u'vigencia': u'29/07/2016', u'cantidad': u'$283.67'}]
+                
+                # Si no hay saldo de regalo, truena.
+                if len(data)>1:
+                    return 'fecha: '+str(datetime.now()) +', ' + \
+                        str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
+                        ', ' + str(data[1]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[1]['cantidad']).replace('$','') + \
+                        ', ' +'vigencia: ' + str(data[0]['vigencia']) 
+                else:
+                    return 'fecha: '+str(datetime.now()) +', ' + \
+                        str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
+                        ', regalo: 0.00' + \
+                        ', ' +'vigencia: ' + str(data[0]['vigencia'])
+            else: #tipo == 'internet'
+                # self.logger.debug(datos_raw)
+                #   {"response":{"data":[{"totalContratado":350.0,"totalConsumido":0.0,"totalDisponible":388.86,"porcentajeConsumo":0.0,"porcentajeConsumoGrafica":0.0,"fechaExpiracion":"16/09/2016","horaConsulta":"16:36:21","productName":"Paquete Sin Límite 150","roamingFlag":0,"paqueteExpiradoAgotado":false,"clave":null,"whatsapp":false,"redSocial":false,"idAnchor":"paqInternet1","amigoSinLimite":true}],"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
 
-            data = json.loads(datos_raw)['response']['data']['saldos']
-            # self.logger.debug(data)
-            # [{u'descripcion': u'Saldo Amigo', u'vigencia': u'29/07/2016', u'cantidad': u'$283.67'}]
-            
-            # Si no hay saldo de regalo, truena.
-            if len(data)>1:
-                return 'fecha: '+str(datetime.now()) +', ' + \
-                    str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
-                    ', ' + str(data[1]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[1]['cantidad']).replace('$','') + \
-                    ', ' +'vigencia: ' + str(data[0]['vigencia']) 
-            else:
-                return 'fecha: '+str(datetime.now()) +', ' + \
-                    str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
-                    ', regalo: 0.00' + \
-                    ', ' +'vigencia: ' + str(data[0]['vigencia'])
-
+                data = json.loads(datos_raw)['response']['data']
+                # self.logger.debug(data)
+                #  [{u'horaConsulta': u'16:58:05', u'totalDisponible': 388.86, u'totalContratado': 350.0, u'porcentajeConsumo': 0.0, u'redSocial': False, u'productName': u'Paquete Sin L\xedmite 150', u'clave': None, u'fechaExpiracion': u'16/09/2016', u'roamingFlag': 0, u'amigoSinLimite': True, u'whatsapp': False, u'idAnchor': u'paqInternet1', u'totalConsumido': 0.0, u'porcentajeConsumoGrafica': 0.0, u'paqueteExpiradoAgotado': False}]
+                
+                # Si no hay saldo de internet, truena.
+                if len(data)>0:
+                    return 'MB consumidos: ' + str(data[0]['totalConsumido']) + \
+                        ', ' + 'MB disponibles: ' + str(data[0]['totalDisponible']) + \
+                        ', ' + 'vigencia: ' + str(data[0]['fechaExpiracion']) 
+                else:
+                    return 'MB contratados: 0' + \
+                        ', ' + 'MB disponibles: 0'  + \
+                        ', ' + 'expirado: ' + str(data[0]['paqueteExpiradoAgotado']) 
         else:
             return ''
 
