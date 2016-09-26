@@ -104,7 +104,7 @@ class TelcelScrapper():
                self.logger.debug("No se guardó info. No se conectó bien.")
                self.logger.info("Tiempo de ejecución: %s" % (str(datetime.now() - start_time)))
 
-        self.escribe_archivo(saldo + ', ' + internet)
+        self.escribe_archivo(saldo + ', ' + internet+'\n')
 
 
 
@@ -209,7 +209,11 @@ class TelcelScrapper():
                         ', ' +'vigencia: ' + str(data[0]['vigencia'])
             else: #tipo == 'internet'
                 # self.logger.debug(datos_raw)
+                
+                ## cuando todavía hay megas:
                 #   {"response":{"data":[{"totalContratado":350.0,"totalConsumido":0.0,"totalDisponible":388.86,"porcentajeConsumo":0.0,"porcentajeConsumoGrafica":0.0,"fechaExpiracion":"16/09/2016","horaConsulta":"16:36:21","productName":"Paquete Sin Límite 150","roamingFlag":0,"paqueteExpiradoAgotado":false,"clave":null,"whatsapp":false,"redSocial":false,"idAnchor":"paqInternet1","amigoSinLimite":true}],"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
+                ## cuando no:
+                # {"response":{"data":[],"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
 
                 data = json.loads(datos_raw)['response']['data']
                 # self.logger.debug(data)
@@ -223,7 +227,7 @@ class TelcelScrapper():
                 else:
                     return 'MB contratados: 0' + \
                         ', ' + 'MB disponibles: 0'  + \
-                        ', ' + 'expirado: ' + str(data[0]['paqueteExpiradoAgotado']) 
+                        ', ' + 'expirado: True' #+ str(data[0]['paqueteExpiradoAgotado']) 
         else:
             return ''
 
