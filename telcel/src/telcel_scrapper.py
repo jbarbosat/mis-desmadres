@@ -189,13 +189,30 @@ class TelcelScrapper():
     def parse_saldo(self, datos_raw,tipo):
         if len(datos_raw)>1:
             if tipo == 'normal':
-                # self.logger.debug(datos_raw)
+                self.logger.debug(datos_raw)
+                ## Cuando sigue vigente:
                 #  {"response":{"data":{"saldoAmigo":283.67,"saldoMix":null,"vigencia":"29/07/2016","saldos":[{"descripcion":"Saldo Amigo","vigencia":"29/07/2016","cantidad":"$283.67"}],"fechaConsulta":"06.58 hrs. del 26/07/2016","fechaLimite":null,"insuficiente":false,"expirado":false},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
+                ## Cuando ya expiró:
+                #  {"response":{"data":{"saldoAmigo":184.41,"saldoMix":null,"vigencia":"27/09/2016","saldos":[],"fechaConsulta":"04.15 hrs. del 27/09/2016","fechaLimite":"27/09/2017","insuficiente":true,"expirado":true},"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
 
-                data = json.loads(datos_raw)['response']['data']['saldos']
-                # self.logger.debug(data)
-                # [{u'descripcion': u'Saldo Amigo', u'vigencia': u'29/07/2016', u'cantidad': u'$283.67'}]
+
+                try:
+                    data = json.loads(datos_raw)['response']['data']['saldos']
+                except:
+                    try: # Si caducó
+                        data = [].push(json.loads(datos_raw)['response']['data'])
+
+                    except: # si de plano no cargó o algo así
+                        data = []
                 
+                # self.logger.debug(json.loads(datos_raw)['response']['data']['saldos'])
+                # [{u'descripcion': u'Saldo Amigo', u'vigencia': u'29/07/2016', u'cantidad': u'$283.67'}]
+
+                #self.logger.debug(json.loads(datos_raw)['response']['data'])
+                # {u'fechaLimite': u'27/09/2017', u'saldoMix': None, u'vigencia': u'27/09/2016', u'expirado': True, u'saldoAmigo': 184.41, u'saldos': [], u'insuficiente': True, u'fechaConsulta': u'04.42 hrs. del 27/09/2016'}
+                
+                # self.logger.debug(data)
+
                 # Si no hay saldo de regalo, truena.
                 if len(data)>1:
                     return 'fecha: '+str(datetime.now()) +', ' + \
@@ -203,10 +220,19 @@ class TelcelScrapper():
                         ', ' + str(data[1]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[1]['cantidad']).replace('$','') + \
                         ', ' +'vigencia: ' + str(data[0]['vigencia']) 
                 else:
-                    return 'fecha: '+str(datetime.now()) +', ' + \
-                        str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
-                        ', regalo: 0.00' + \
-                        ', ' +'vigencia: ' + str(data[0]['vigencia'])
+                    # si ya expiró, truena
+                    if len(data)>0:
+                        return 'fecha: '+str(datetime.now()) +', ' + \
+                            str(data[0]['descripcion']).replace('Saldo ','').replace('de ','').lower() +': ' + str(data[0]['cantidad']).replace('$','') + \
+                            ', regalo: 0.00' + \
+                            ', ' +'vigencia: ' + str(data[0]['vigencia'])
+                    else:
+                        return ''
+                        # return 'fecha: '+str(datetime.now()) +', ' + \
+                        #     'amigo: ' + str(data['saldoAmigo']).replace('$','') + \
+                        #     ', regalo: 0.00' + \
+                        #     ', ' +'vigencia: ' + str(data['vigencia'])
+
             else: #tipo == 'internet'
                 # self.logger.debug(datos_raw)
                 
@@ -215,7 +241,10 @@ class TelcelScrapper():
                 ## cuando no:
                 # {"response":{"data":[],"message":{"titulo":"Éxito","descripcion":"Operación exitosa","descripcionSistema":null,"categoria":"TXT","causer":null,"status":null}}}
 
-                data = json.loads(datos_raw)['response']['data']
+                try:
+                    data = json.loads(datos_raw)['response']['data']
+                except:
+                    data = []
                 # self.logger.debug(data)
                 #  [{u'horaConsulta': u'16:58:05', u'totalDisponible': 388.86, u'totalContratado': 350.0, u'porcentajeConsumo': 0.0, u'redSocial': False, u'productName': u'Paquete Sin L\xedmite 150', u'clave': None, u'fechaExpiracion': u'16/09/2016', u'roamingFlag': 0, u'amigoSinLimite': True, u'whatsapp': False, u'idAnchor': u'paqInternet1', u'totalConsumido': 0.0, u'porcentajeConsumoGrafica': 0.0, u'paqueteExpiradoAgotado': False}]
                 
