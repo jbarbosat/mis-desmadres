@@ -19,12 +19,15 @@ Agenda
 
 Sobre mí
 =======================================================
+
 - OPI https://opi.la
   - Data Scientist: Prevención social de la violencia. 
   - Data Engineer: Herramientas, servicios, infraestructura. Diseño de software.
 
 Una historia
 =======================================================
+
+<br>
 Había una vez, en el área de Mercadotecnia de una empresa grande...
 
 Modelos
@@ -53,18 +56,24 @@ Productos de datos
 
 Ejemplos
 =======================================================
-- Sistemas de recomendación
+- **Sistemas de recomendación**
   - "Dado que usted consumió A y B, quizá le interese C"
-- Tiempo de llegada del punto A al B
+- **Tiempo de llegada**
   - "Dados la hora del día y los datos de tráfico que tenemos, usted tardará Xmin en llegar"
-- Early warning systems
+- **Early warning systems**
   - "Dadas mediciones de sensores, se aproxima un huracán que seguirá X trayectoria"
-- Evolución de conflictos
+- **Evolución de conflictos**
   - "Dado un live feed de Twitter + noticias + indicadores económicos, es probable que haya guerra en X lugar"
+
+Un ejemplo de arquitectura
+=======================================================
+
+![my image](arqui.jpg)
 
 
 Implicaciones arquitectónicas: Datos
 ======================================================
+
 - Pipelines para **normalizar** datos
   - Diferentes fuentes y periodicidades
 - Data Container (base, relacional o no, o un data lake, ...)
@@ -76,28 +85,39 @@ Implicaciones arquitectónicas: Datos
 
 Implicaciones arquitectónicas: Aplicación
 ======================================================
+
 - **Front-end**
 - **APIs** que conecten front con datos
-- **Datos seleccionados** para la aplicación.
-- Computadoras que **evalúen** modelos entrenados.
-- Además de: logs, balanceadores de carga, colas de trabajo (features que tardan en calcularse), etc.
+- **Datos seleccionados** para la aplicación
+- Computadoras que **evalúen** modelos entrenados
+- Además de...
+    - Logs, balanceadores de carga, colas de trabajo (features que tardan en calcularse), etc.
+
+
+
+Productos de datos
+=======================================================
+- Mayor alcance que los modelos solos
+- Más valor que una aplicación sin inteligencia detrás
+<br>
+- Business Intelligence vs. Ciencia de Datos: Qué tan integrados están
+con el resto de la empresa.
 
 
 Comentarios
 =======================================================
-- Datos vs ciencia
 
-
-- Empresas: Si no tienen objetivos medibles e idea de qué necesitan...
-  - Alguien que **plantee** el problema y sus métricas... Y luego a un montón de científicos de datos que **ejecuten**.
-  - Un **prototipo** con herramientas open source... Y luego contratar herramientas casísimas a empresas gigantes.
+Empresas: Si no tienen objetivos medibles e idea de qué necesitan...
+  - Alguien que **plantee** el problema y sus métricas... Y luego a un montón de gente que **ejecute**.
+  - Un **prototipo** con herramientas open source... Y luego contratar herramientas carísimas a empresas gigantes.
 
 
 Comentarios
 =======================================================
+
 - Procesos en ciencia de datos:
   - Checklists que eviten repetir trabajo desde el paso cero.
-
+<br>
 - Trabajo colaborativo en ciencia de datos:
   - Carpetas para diferentes pasos
   - Versionamiento de datos
@@ -107,7 +127,9 @@ Comentarios
 Comentarios
 =======================================================
 
-- Las tecnologías se vuelven obsoletas, los principios no:
+Las tecnologías se vuelven obsoletas, los principios no:
   - Transparecia, replicabilidad
   - Escalabilidad
+  - Trabajo interdisciplinario
   - Ética
+
