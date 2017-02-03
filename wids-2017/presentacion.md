@@ -60,7 +60,7 @@ Ejemplos
 - Early warning systems
   - "Dadas mediciones de sensores, se aproxima un huracán que seguirá X trayectoria"
 - Evolución de conflictos
-  - "Dado un live feed de Twitter + noticias + indicadores económicos, es probable que haya conflictos armados en X lugar próximamente"
+  - "Dado un live feed de Twitter + noticias + indicadores económicos, es probable que haya guerra en X lugar"
 
 
 Implicaciones arquitectónicas: Datos
@@ -85,10 +85,9 @@ Implicaciones arquitectónicas: Aplicación
 
 Comentarios
 =======================================================
-- Las tecnologías se vuelven obsoletas, los principios no:
-  - Transparecia, replicabilidad
-  - Escalabilidad
-  - Ética
+- Datos vs ciencia
+
+
 - Empresas: Si no tienen objetivos medibles e idea de qué necesitan...
   - Alguien que **plantee** el problema y sus métricas... Y luego a un montón de científicos de datos que **ejecuten**.
   - Un **prototipo** con herramientas open source... Y luego contratar herramientas casísimas a empresas gigantes.
@@ -96,12 +95,19 @@ Comentarios
 
 Comentarios
 =======================================================
-- Datos vs ciencia
-- Modelar es un proceso iterativo 
 - Procesos en ciencia de datos:
   - Checklists que eviten repetir trabajo desde el paso cero.
+
 - Trabajo colaborativo en ciencia de datos:
   - Carpetas para diferentes pasos
   - Versionamiento de datos
   - https://github.com/orpheus-db/implementation/releases
-  
+
+
+Comentarios
+=======================================================
+
+- Las tecnologías se vuelven obsoletas, los principios no:
+  - Transparecia, replicabilidad
+  - Escalabilidad
+  - Ética
