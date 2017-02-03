@@ -62,6 +62,11 @@ Ejemplos
 - Evolución de conflictos
   - "Dado un live feed de Twitter + noticias + indicadores económicos, es probable que haya guerra en X lugar"
 
+Un ejemplo de arquitectura
+=======================================================
+
+[dibujito]
+
 
 Implicaciones arquitectónicas: Datos
 ======================================================
@@ -78,19 +83,27 @@ Implicaciones arquitectónicas: Aplicación
 ======================================================
 - **Front-end**
 - **APIs** que conecten front con datos
-- **Datos seleccionados** para la aplicación.
-- Computadoras que **evalúen** modelos entrenados.
-- Además de: logs, balanceadores de carga, colas de trabajo (features que tardan en calcularse), etc.
+- **Datos seleccionados** para la aplicación
+- Computadoras que **evalúen** modelos entrenados
+- Además de...
+    - Logs, balanceadores de carga, colas de trabajo (features que tardan en calcularse), etc.
+
+
+
+Productos de datos
+=======================================================
+- Mayor alcance que los modelos solos
+- Más valor que una aplicación sin inteligencia detrás
+
+- Business Intelligence vs. Ciencia de Datos: Qué tan integrados están
+con el resto de la empresa.
 
 
 Comentarios
 =======================================================
-- Datos vs ciencia
-
-
-- Empresas: Si no tienen objetivos medibles e idea de qué necesitan...
-  - Alguien que **plantee** el problema y sus métricas... Y luego a un montón de científicos de datos que **ejecuten**.
-  - Un **prototipo** con herramientas open source... Y luego contratar herramientas casísimas a empresas gigantes.
+Empresas: Si no tienen objetivos medibles e idea de qué necesitan...
+  - Alguien que **plantee** el problema y sus métricas... Y luego a un montón de gente que **ejecute**.
+  - Un **prototipo** con herramientas open source... Y luego contratar herramientas carísimas a empresas gigantes.
 
 
 Comentarios
@@ -107,7 +120,8 @@ Comentarios
 Comentarios
 =======================================================
 
-- Las tecnologías se vuelven obsoletas, los principios no:
+Las tecnologías se vuelven obsoletas, los principios no:
   - Transparecia, replicabilidad
   - Escalabilidad
   - Ética
+
