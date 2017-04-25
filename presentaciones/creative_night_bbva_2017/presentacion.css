@@ -1,0 +1,47 @@
+.reveal section pre code {
+  display: block;
+  padding: 0.5em;
+  font-size: 1.0em;
+  line-height: 1.5em;
+  background-color: #F8F8F8;
+    overflow: visible;
+  max-height: none;
+  word-wrap: normal;
+}
+
+.exclaim .reveal .state-background {
+  background: black;
+}
+.exclaim .reveal h1,
+.exclaim .reveal h2,
+.exclaim .reveal h3,
+.exclaim .reveal p {
+  color: white;
+}
+
+.small-font {
+  font-size: 10px;
+}
+
+
+.reveal section pre code r {
+  display: block;
+  padding: 0.5em;
+  font-size: 0.80em;
+  line-height: 0.9em;
+  background-color: grey;
+  overflow: visible;
+  max-height: none;
+  word-wrap: normal;
+}
+
+.reveal section code r {
+  display: block;
+  padding: 0.5em;
+  font-size: 0.20em;
+  line-height: 0.9em;
+  background-color: grey;
+  overflow: visible;
+  max-height: none;
+  word-wrap: normal;
+}
