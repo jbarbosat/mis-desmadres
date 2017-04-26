@@ -6,11 +6,46 @@ El término _ciencia de datos_ va de la mano del concepto de _big data_; ambos c
 _Big data_ puede referirse a una de tres cosas: a) datos de gran tamaño que se generan muy rápido y en formatos
 variados (está todo el asunto de las 5 V's: volumen, velocidad, variedad, veracidad, valor); b) las herramientas
 que se utilizan para tratarlos (sistemas distribuidos, cómputo en la nube, Apache Hadoop) o c) aplicaciones que
-hacen uso de datos y herramientas (como los sistemas de recomendación que hay en Netflix o en Amazon).
+hacen uso de esos datos y esas herramientas (como los sistemas de recomendación que hay en Netflix o en Amazon).
 
 Por otra parte, por _ciencia de datos_ se entiende un campo del conocimiento que permite lidiar con datos grandes
 a través de herramientas como las mencionadas anteriormente para producir aplicaciones en cuyo centro esté algún
-modelo evaluándose en tiempo real (o casi real) para dar valor. Incluye matemáticas, computación y estadística. 
+modelo evaluándose en tiempo real (o casi real) para dar valor. Esta disciplina incluye matemáticas, computación 
+y estadística y gracias a que estos campos se combinan, se pueden generar cosas distintas y abordar problemas de
+maneras novedosas.
+
+Supongamos que queremos optimizar el uso de alguna aplicación de citas en línea. 
+Tras haber instalado la aplicación y habernos mensajeado con
+algunas personas, notamos que la gente no nos parece interesante y que simplemente no hacemos click con ellos, 
+así que se nos ocurre la brillante idea de crear un perfil óptimo para atraer al tipo de personas que nos interesan.
+Supongamos que nos gustaría atraer a personas sensibles que gusten de la literatura y otras formas de arte.
+
+Si supiéramos algo sobre manejo de imágen y lenguaje corporal, pensaríamos en crear un perfil que comunique
+seguridad pero no prepotencia. En mostrar fotos donde luzcamos divertidos y naturales; no posando al lado de nuestro
+carro último modelo sino rodeados de cosas cotidianas y quizá alguna toma en blanco y negro medio artística.
+
+Si fuéramos ingenieros en computación, quizá pensaríamos en tener un script corriendo que nos filtre las personas
+que nos mensajean: que descarte los perfiles que tienen menos de dos fotos o gente cuyas fotos no muestran su cara
+o que busque entre los perfiles de la aplicación a aquellas personas que tengan fotos donde veamos libros o 
+perfiles que mencionen interés por la literatura.
+
+Por otro lado, alguien con conocimiento estadístico podría quizá pensar en diseñar un experimento: crear varios
+perfiles con distintos tipos de fotos o con información distinta y ver qué tipo de perfil atrae a las personas
+que nos interesan más.
+
+Sin embargo, alguien que sabe ciencia de datos podría proponer crear una aplicación que ayude a las personas
+a crear su perfil óptimo para atraer gente. Lo primero que necesita es saber qué tipos de usuarios hay en la
+aplicación para ver qué los caracteriza y luego ver qué personas los atraen más. Quizá hay gente que se ve
+atraida por gente que muestra fotos posando con su perro o por gente con fotos de su coche o de su moto. Como
+claramente no tiene acceso a todos los datos de los usuarios que existen en una plataforma, arma una propuesta
+de proyecto y se pone en contacto con los manejadores de los sitios para venderles la idea: con sus datos,
+se puede hacer perfilado de clientes y ver qué tipos de personas se atraen entre sí para incluir en el sitio
+un sistema de recomendación.
+
+Hasta ahora, hemos visto que la ciencia de datos toma visiones de diferentes áreas y las conjunta en aplicaciones
+de datos. En una empresa, un área de ciencia de datos debería incluir perfiles diversos: gente con conocimientos
+matemáticos para hacer modelos, gente que sepa diseñar software (arquitectura y UX), gente que pueda 
+procesar datos grandes y generar variables interesantes para los modelos.
 
 Gran parte del trabajo de un científico de datos radica en la limpieza e integración de esos datos enormes que 
 mencionamos antes para que puedan ser utilizados en el entrenamiento y evaluación de modelos que den información nueva. Aunque
@@ -23,4 +58,3 @@ podríamos hacer un sistema de ecuaciones diferenciales que intente explicar el 
 avenidas de la ciudad. La idea del modelado es basarnos en mediciones que se hacen del fenómeno y utilizar algún
 algoritmo para ajustar parámetros y obtener un modelo.
 
-Pasemos a un ejemplo más concreto. Supongamos que 
