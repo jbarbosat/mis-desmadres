@@ -1,0 +1,26 @@
+La ciencia de datos como generadora de ideas
+==================================================
+
+El término _ciencia de datos_ va de la mano del concepto de _big data_; ambos comceptos están muy de moda estos días.
+
+_Big data_ puede referirse a una de tres cosas: a) datos de gran tamaño que se generan muy rápido y en formatos
+variados (está todo el asunto de las 5 V's: volumen, velocidad, variedad, veracidad, valor); b) las herramientas
+que se utilizan para tratarlos (sistemas distribuidos, cómputo en la nube, Apache Hadoop) o c) aplicaciones que
+hacen uso de datos y herramientas (como los sistemas de recomendación que hay en Netflix o en Amazon).
+
+Por otra parte, por _ciencia de datos_ se entiende un campo del conocimiento que permite lidiar con datos grandes
+a través de herramientas como las mencionadas anteriormente para producir aplicaciones en cuyo centro esté algún
+modelo evaluándose en tiempo real (o casi real) para dar valor. Incluye matemáticas, computación y estadística. 
+
+Gran parte del trabajo de un científico de datos radica en la limpieza e integración de esos datos enormes que 
+mencionamos antes para que puedan ser utilizados en el entrenamiento y evaluación de modelos que den información nueva. Aunque
+la mera limpieza e integración de datos requiere de mucho ingenio, me pareció que si hablamos de la creación de
+modelos podemos tener ejemplos más concretos del papel que juega la creatividad en este campo.
+
+Un _modelo_ es una simplificación de la realidad. En particular, un _modelo matemático_ hace uso de herramientas
+matemáticas para crear sistemas que se comporten de manera similar al fenómeno que se está estudiando. Por ejemplo,
+podríamos hacer un sistema de ecuaciones diferenciales que intente explicar el flujo de carros a través de las
+avenidas de la ciudad. La idea del modelado es basarnos en mediciones que se hacen del fenómeno y utilizar algún
+algoritmo para ajustar parámetros y obtener un modelo.
+
+Pasemos a un ejemplo más concreto. Supongamos que 
