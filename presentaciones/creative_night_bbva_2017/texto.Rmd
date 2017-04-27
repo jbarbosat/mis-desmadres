@@ -58,3 +58,118 @@ podríamos hacer un sistema de ecuaciones diferenciales que intente explicar el 
 avenidas de la ciudad. La idea del modelado es basarnos en mediciones que se hacen del fenómeno y utilizar algún
 algoritmo para ajustar parámetros y obtener un modelo.
 
+
+
+¿Cómo genera ideas la ciencia de datos?
+
+El proceso de entrenamiento de modelos implica la elección de algoritmos adecuados y la generación de variables que posiblemente expliquen algún fenómeno. Gracias a la colaboración entre analistas y expertos del tema que se esté estudiando es posible calcular indicadores que ninguno de los dos equipos podría haber creado por sí mismo. En esta plática se mostrará brevemente el potencial que tiene el análisis de datos para aportar nuevas ideas a los expertos de un tema dado y viceversa: la importancia que tiene el involucrar a la gente con experiencia a la hora de generar modelos.
+
+
+
+
+
+
+El concepto "ciencia de datos", al igual que el de "big data", están muy de moda: la gente quiere aprender
+ciencia de datos, las empresas quieren tener áreas de big data, hay nuevos cursos y certificados en el tema, etc.
+Brevemente, el término "big data" puede referirse a alguna(s) de las siguientes cosas:
+a) datos de gran tamaño que se generan muy rápido y en formatos
+variados (está todo el asunto de las 5 V's: volumen, velocidad, variedad, veracidad, valor); b) las herramientas
+que se utilizan para tratarlos (sistemas distribuidos, cómputo en la nube, Apache Hadoop) o c) aplicaciones que
+hacen uso de esos datos y esas herramientas (como los sistemas de recomendación que hay en Netflix o en Amazon).
+
+En cambio, se ha denominado "ciencia de datos" a la conjunción de conocimientos matemáticos, estadísticos, 
+computacionales y de diseño que permiten crear cosas que ninguna de esas disciplinas por sí sola había sido
+capaz de hacer: productos de datos. Es decir, aplicaciones en cuyo centro está algún modelo matemático entrenado
+que se evalúa en tiempo real y que entrega valor a los usuarios mediante visualizaciones de datos u otras interfaces
+diseñadas para hacer felices a los usuarios.
+
+Trabajar en un equipo de ciencia de datos implica, al igual que en cualquier equipo multidisciplinario, que la
+visión de cada integrante complementa el modo en que el equipo aborda problemas.
+
+Por ejemplo, supongamos que somos dueños de algún sitio de citas en línea. Con tanta competencia, nos interesa
+que los usuarios de nuestro portal se sientan satisfechos: que encuentren gente interesante con quien platicar
+y salir. Hacemos una junta para que las diferentes áreas de la empresa que mantiene la aplicación sugieran ideas. 
+
+Alguien del área de tecnología podría sugerir agregar 
+a la aplicación un motor de búsqueda que no solamente filtre por edad, lugar de residencia o intereses sino que 
+permita filtrar por información que dan los usuarios implícitamente. Por ejemplo, tipos de fotos que suben:
+¿aparecen con mascotas? ¿Posan en la playa? ¿O con su carro? Podrían sugerir hacer uso de alguna herramienta de
+reconocimiento de imágenes para obtener esa información de las fotos que tiene la gente en la plataforma y
+ofrecer esos filtros avanzados a los usuarios por un costo extra.
+
+Alguien con conocimientos de psicología podría sugerir agregar al
+sitio un cuestionario con preguntas más específicas que permitan conocer la personalidad e intereses de la gente: ¿les
+gusta ser quienes tomen la iniciativa? ¿Qué opinan sobre el matrimonio? ¿Qué tan importante es para ellos la
+religión? Con esto, podríamos recomendarle a la gente los usuarios que resulten más compatibles e incluso
+cobrarles por esas recomendaciones.
+
+El deparamento de BI podría sugerir hacer un modelo para clasificar usuarios según el tipo de actividad
+que tienen en la aplicación y la interacción que tienen con otros tal que se pueda diseñar para cada tipo de usuario
+alguna estrategia que los haga pasar más tiempo en el portal. 
+
+Se termina la junta y salimos con tres buenas ideas; cada área planea sus tareas y fechas y al final tenemos
+tres cosas nuevas que agregar a la plataforma. 
+
+Sin embargo, si nuestra empresa tuviera un área de ciencia de datos, podría llevar estas sugerencias al
+siguiente nivel, proponiendo la creación de un servicio premium que ayude a los usuarios a ser más atractivo
+para las personas que le interesan. Mediante el análisis de las interacciones entre
+usuarios podríamos detectar patrones en sus perfiles y en su uso de la aplicación. Esto podría permitir no solamente 
+hacer sugerencias de usuarios sino incluso de formatos de perfiles (cuántas fotos, de qué tipo, qué intereses enlistar)
+o sugerir horarios de uso y maneras de interactuar con el tipo de usuarios que les atraen.
+
+Por ejemplo, si a alguien le interesan las personas artísticas, podríamos detectar que es mejor usar saludos
+elaborados en lugar de un "Hola" genérico o que es útil incluir alguna fotografía en blanco y negro donde
+solamente se vea una parte de la cara e incluir artistas específicos en la lista de intereses y no solamente
+escribir "arte" como un interés.
+
+A pesar de lo mundano del ejemplo anterior, el punto importante a rescatar es el siguiente: la colaboración
+constante de gente con perfiles diversos para un fin común ayuda a que surjan ideas que individualmente no
+podrían haber surgido. Un campo como la ciencia de datos que involucra a gente con perfiles distintos es
+muy propicio para que surjan nuevas maneras de enfrentar problemas.
+
+Así como un área de ciencia de datos puede proponer cosas que las diferentes áreas de una empresa tradicionalmente
+no son capaces de proponer, el alcance de sus ideas depende completamente de la retroalimentación que reciban
+de los expertos en el negocio.
+
+Supongamos, por poner un ejemplo muy distinto del anterior, que tenemos una cadena de minisupers que quiere abrir más
+sucursales y no sabe dónde hacerlo, así que contratan a nuestra empresa de ciencia de datos para que generemos
+un modelo que los ayude a predecir cuánto vendería una sucursal en una zona dada para saber en dónde les conviene
+abrir un minisuper nuevo.
+
+Usualmente, los pasos que se siguien en este caso son los siguientes:
+
+- Discutimos con el cliente: ¿qué nos pueden decir de su negocio? ¿Cuándo venden más? ¿Qué zonas son 
+las mejores para su negocio? ¿Cómo deciden dónde abrir sucursales nuevas?
+¿Cómo registran sus ventas? ¿Tienen los mismos precios en todas sus sucursales? ¿Tienen promociones?
+
+- Analizamos la información de ventas de sus sucursales (tanto actuales como sucursales que hayan cerrado) para
+saber en qué tipos de zonas venden más. Buscamos patrones y anomalías.
+
+- Algo que hemos aprendido a la mala en OPI: Presentamos resultados de ese análisis inicial a los expertos y 
+hacemos preguntas antes de modelar. Supongamos que 
+notamos que una de las sucursales tiene muchas más ventas 
+que las demás a pesar de estar en una zona con poca población y con mucha competencia. Le preguntamos al cliente
+y resulta que esa sucursal tiene convenios con restaurantes de la zona y les vende refrescos a precios de mayoreo.
+Al cliente por sí solo no se le habría ocurrido mencionar eso; no tiene idea de que es necesario quitar esas ventas
+de mayoreo para que esa sucursal sea comparable con las demás. Si le explicamos al cliente que ese tipo de 
+información es importante, puede además decirnos que cambiaron su catálogo de productos hace dos años así que
+los nombres que aparecen en sus ventas desglosadas hoy no corresponden con los de hace dos años.j
+
+- Suponiendo que todas nuestras dudas sobre sus datos son aclaradas, pasamos a la parte del modelo. Aquí aplica
+la interdisciplinariedad del equipo de ciencia de datos que mencionábamos antes: generamos variables que puedan 
+ser útiles para explicar las ventas de los minisupers, tomando en cuenta lo que nos dijeron los clientes más 
+el poder de cómputo que tenemos. Por ejemplo, nuestros clientes saben que la cercanía con un OXXO les quita ventas
+y que la cercanía con escuelas les ayuda, así que cuando van a decidir si rentar o no un local para expandirse,
+mandan a alguien a que camine por la zona y vea si hay escuelas y si hay OXXOs cerca. En cambio, el científico
+de datos busca las ubicaciones de los OXXOs y las escuelas en toda la CDMX y calcula variables que utilizará en
+su modelo: la distancia entre la sucursal a evaluar y el OXXO más cercano; lo mismo para la escuela más cercana.
+
+- Con el modelo evaluado, se regresa con el cliente para asegurarnos que tenga sentido lo que generamos. 
+Es muy importante que el modelo sea explicable. Si utilizamos algún algoritmo que procese las variables de 
+maneras oscuras, no habrá relaciones claras que tengan sentido para la gente y eso hace que pierdan confianza 
+en el modelo que generamos. Muchas veces es
+necesario sacrificar qué tan bien se ajusta el modelo a cambio de que sea muy claro cómo afectan los predictores
+a la variable a explicar; ventas de sucursales, en este caso.
+
+
+
