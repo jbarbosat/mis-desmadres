@@ -9,11 +9,8 @@ Agenda
 ========================================================
 
 - Sobre mí
-- Big Data
 - Ciencia de Datos
-- Modelos
 - Ejemplo
-- Creatividad
 - Comentarios varios
 
 Sobre mí
@@ -26,12 +23,6 @@ Sobre mí
 - [Esta presentación en Github](https://github.com/jbarbosat/mis-desmadres/tree/master/presentaciones/creative_night_bbva_2017)
 
 
-Big Data
-======================================================
-- Datos (5 Vs: volumen, velocidad, variedad, veracidad, valor)
-- Herramientas (Apache Hadoop, Apache Spark, ...)
-- Aplicaciones (productos de datos: Netflix, Amazon, ...)
-
 Ciencia de Datos
 ======================================================
 - Conocimientos para lidiar con Big Data
@@ -39,7 +30,7 @@ Ciencia de Datos
   - Limpieza e integración de datos
   - Creación de modelos
   - Comunicación de resultados
-
+- Crear modelos que **aporten valor**
 
 Modelos
 ======================================================
@@ -47,20 +38,63 @@ Modelos
 - Algoritmos: no tan importante
 - Variables (feature engineering)
 
-Ejemplo
+
+Ejemplo: Minisuper
 =====================================================
 
+- Ir con el cliente:
+  - Nos explica su problema y cómo lo está resolviendo.
+  - Nos da sus datos: casos de éxito y de fracaso.
+
+- Analizar los datos que nos dio:
+  - Buscar patrones, buscar anomalías.
+  - ¿Funciona el modo en que están solucionando su problema?
+
+
+Ejemplo: Minisuper
+=====================================================
+
+- Volver con el cliente con muchas preguntas:
+  - Explicación de anomalías encontradas.
+  - Cosas que puedan meter ruido en la variable a explicar (ventas: promociones, cambios en catálogo de artículos, etc.)
+  - Ver sus datos permite hacer las preguntas correctas.
+
+- Crear variables para un modelo:
+  - Variables que el cliente sugirió pero mejoradas (gente en campo vs. DENUE).
+  - Variables que han funcionado antes (INEGI vs. tráfico).
+  - Variables a partir de patrones en los datos del cliente (bares, tipos de escuela).
+
+
+Ejemplo: Minisuper
+=====================================================
+
+- Ajustar modelos:
+	- Simplificación de la realidad.
+	- Más que lo sofisticado del algoritmo, algo que sea explicable.
+	- Si no es explicable, no va a aportar valor y ¿entonces, para qué entrené un modelo?
+
+- Presentar el modelo.
+  - No en un pdf, en una aplicación.
+	- Variables que tengan sentido, relaciones que tengan sentido.
+
+
+En resumen
+=======================================================
+
+- Hablar con el cliente
+- Estudiar sus datos
+- Hacer preguntas adecuadas
+- Generar modelos explicables
+- Rebotar modelo con el cliente
+- Hacer accesible el modelo en una aplicación
 
 
 Comentarios
 ======================================================
-- Explicabilidad de los modelos:
-  - Si el cliente entiende, puede sugerir variables nuevas.
+- Un área de científicos de datos: no una sola persona, no roles repetidos
+  - Ambientes colaborativos
+- Retroalimentación de los expertos (variables y modelo)
+- Explicabilidad de los modelos: 
   - Si el cliente entiende, puede cambiar procesos a partir de lo que diga un modelo.
-- Retroalimentación de los expertos
-- Ambientes colaborativos
+- Presentación del modelo: una aplicación
 
-
-Referencias
-=====================================================
-- https://www.ted.com/talks/amy_webb_how_i_hacked_online_dating
