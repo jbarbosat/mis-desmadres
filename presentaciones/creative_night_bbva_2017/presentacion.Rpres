@@ -10,7 +10,7 @@ Agenda
 
 - Sobre mí
 - Ciencia de Datos
-- Creación de modelos
+- Ejemplo
 - Comentarios varios
 
 Sobre mí
@@ -26,12 +26,11 @@ Sobre mí
 Ciencia de Datos
 ======================================================
 - Conocimientos para lidiar con Big Data
-- Crear modelos que aporten valor
 - Muchos roles:
   - Limpieza e integración de datos
   - Creación de modelos
   - Comunicación de resultados
-
+- Crear modelos que **aporten valor**
 
 Modelos
 ======================================================
@@ -44,25 +43,30 @@ Ejemplo: Minisuper
 =====================================================
 
 - Ir con el cliente:
-		- Nos explica su problema y cómo lo está resolviendo.
-		- Nos da sus datos: casos de éxito y de fracaso.
+  - Nos explica su problema y cómo lo está resolviendo.
+  - Nos da sus datos: casos de éxito y de fracaso.
 
 - Analizar los datos que nos dio:
-		- Buscar patrones, buscar anomalías.
-		- ¿Funciona el modo en que están solucionando su problema?
+  - Buscar patrones, buscar anomalías.
+  - ¿Funciona el modo en que están solucionando su problema?
 
-- Volver con el cliente con muchas preguntas:
-		- Explicación de anomalías encontradas.
-		- Cosas que puedan meter ruido en la variable a explicar (ventas: promociones, cambios en catálogo de artículos, etc.)
-		- Ver sus datos permite hacer las preguntas correctas; dan información más específica que en la primera junta.
 
 Ejemplo: Minisuper
 =====================================================
-		
+
+- Volver con el cliente con muchas preguntas:
+  - Explicación de anomalías encontradas.
+  - Cosas que puedan meter ruido en la variable a explicar (ventas: promociones, cambios en catálogo de artículos, etc.)
+  - Ver sus datos permite hacer las preguntas correctas.
+
 - Crear variables para un modelo:
-	- Variables que el cliente sugirió pero mejoradas (gente en campo buscando OXXOs y escuelas vs. todos los competidores y todas las escuelas de la ciudad).
-	- Variables que han funcionado antes (INEGI vs. tráfico).
-	- Variables a partir de patrones en los datos del cliente (bares, tipos de escuela).
+  - Variables que el cliente sugirió pero mejoradas (gente en campo vs. DENUE).
+  - Variables que han funcionado antes (INEGI vs. tráfico).
+  - Variables a partir de patrones en los datos del cliente (bares, tipos de escuela).
+
+
+Ejemplo: Minisuper
+=====================================================
 
 - Ajustar modelos:
 	- Simplificación de la realidad.
@@ -70,7 +74,7 @@ Ejemplo: Minisuper
 	- Si no es explicable, no va a aportar valor y ¿entonces, para qué entrené un modelo?
 
 - Presentar el modelo.
-	- No en un pdf, en una aplicación.
+  - No en un pdf, en una aplicación.
 	- Variables que tengan sentido, relaciones que tengan sentido.
 
 
@@ -88,9 +92,9 @@ En resumen
 Comentarios
 ======================================================
 - Un área de científicos de datos: no una sola persona, no roles repetidos
-	- Ambientes colaborativos
+  - Ambientes colaborativos
 - Retroalimentación de los expertos (variables y modelo)
 - Explicabilidad de los modelos: 
-	- Si el cliente entiende, puede cambiar procesos a partir de lo que diga un modelo.
+  - Si el cliente entiende, puede cambiar procesos a partir de lo que diga un modelo.
 - Presentación del modelo: una aplicación
 
