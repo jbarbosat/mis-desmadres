@@ -1,0 +1,8 @@
+{
+  "name": "pubSubListener",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
